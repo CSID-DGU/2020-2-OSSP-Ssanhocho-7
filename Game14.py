@@ -12,7 +12,7 @@ import pygame
 import Levels
 
 
-'''定义一些必要的参数'''
+'''定义一些必要的参数(몇가지 주요배개변수 )'''
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -29,9 +29,51 @@ BlinkyPATH = os.path.join(os.getcwd(), 'resources/images/Blinky.png')
 ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
+img =pygame.image.load('resources/images/pacman.png')
+RUNNING, PAUSE = 0, 1
+state = RUNNING
+pause_text = "일시정지"
 
 
-'''开始某一关游戏'''
+#11/11
+'''INTRO = [["게임 시작", 0],
+         ["제어", 0],
+         ["게임에대해", 0],
+         ["순위표", 0],
+         ["exit", 0]]'''
+'''
+class StartScreen:
+    #시작 인터페이스 표시를 담당하는 클래스
+    def __init__(self):
+        global all_sprites, INTRO
+        # 고스트 이동속도
+        #self.v = 6
+        #화면에 게임 이름 이미지 및 위치로드
+        image = load_image('start_screen.png')
+        sprite = pygame.sprite.Sprite()
+        sprite.image = image
+        sprite.rect = sprite.image.get_rect()
+        sprite.rect.x = WIDTH // 2 - image.get_width() // 2
+        sprite.rect.y = 0
+        all_sprites.add(sprite)
+
+    def print_text(self):
+        #시작 창의 텍스트 표
+        for i in range(len(INTRO)):
+            if INTRO[i][1] == 0:
+                color = pygame.Color("white")
+            else:
+                color = pygame.Color("yellow")
+            font = pygame.font.Font(FULLNAME, 50)
+            text = font.render(INTRO[i][0], 1, (color))
+            start_x = WIDTH // 2 - text.get_width() // 2
+            start_y = HEIGHT // 2 - text.get_height() // 2 - 50
+            text_x = start_x
+            text_y = start_y + i * 60
+            screen.blit(text, (text_x, text_y))'''
+
+
+'''开始某一关游戏(특정레벨시 )'''
 def startLevelGame(level, screen, font):
 	clock = pygame.time.Clock()
 	SCORE = 0
@@ -40,7 +82,13 @@ def startLevelGame(level, screen, font):
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
+
+
+	runn=True
+
 	while True:
+
+
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
@@ -62,6 +110,93 @@ def startLevelGame(level, screen, font):
 					for hero in hero_sprites:
 						hero.changeSpeed([0, 1])
 						hero.is_move = True
+
+	#일시정지 기능 만드는 중 11/11 창dy
+				elif event.key == pygame.K_a:
+						sys.exit()
+						pygame.quit()
+				elif event.key == pygame.K_ESCAPE:
+						runn=True
+				elif event.type == pygame.QUIT:
+					sys.exit()
+					pygame.quit()
+				elif event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_RETURN:
+						if is_clearanpce:
+							if not flag:
+								return
+							else:
+								main(initialize())
+						else:
+							main(initialize())
+					elif event.key == pygame.K_ESCAPE:
+						sys.exit()
+						pygame.quit()
+
+					elif event.key == pygame.K_a:
+						sys.exit()
+						pygame.quit()
+		while runn:
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					sys.exit(-1)
+					pygame.quit()
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_LEFT:
+						for hero in hero_sprites:
+							hero.changeSpeed([-1, 0])
+							hero.is_move = True
+					elif event.key == pygame.K_RIGHT:
+						for hero in hero_sprites:
+							hero.changeSpeed([1, 0])
+							hero.is_move = True
+					elif event.key == pygame.K_UP:
+						for hero in hero_sprites:
+							hero.changeSpeed([0, -1])
+							hero.is_move = True
+					elif event.key == pygame.K_DOWN:
+						for hero in hero_sprites:
+							hero.changeSpeed([0, 1])
+							hero.is_move = True
+					elif event.key == pygame.K_ESCAPE:
+							sys.exit()
+							pygame.quit()
+					elif event.key == pygame.K_a:
+							runn=False
+
+					elif event.type == pygame.QUIT:
+						sys.exit()
+						pygame.quit()
+					elif event.type == pygame.KEYDOWN:
+						if event.key == pygame.K_RETURN:
+							if is_clearance:
+								if not flag:
+									return
+								else:
+									main(initialize())
+							else:
+								main(initialize())
+						elif event.key == pygame.K_ESCAPE:
+							sys.exit()
+							pygame.quit()
+
+						elif event.key == pygame.K_a:
+							sys.exit()
+							pygame.quit()
+
+
+					'''while True :
+						#for event in pygame.event.get():
+							if event.type == pygame.quit():break
+							if event.type == pygame.KEYDOWN:
+								if event.key == pygame.K_p:
+									state=PAUSE
+									print(state)
+								if event.key == pygame.K_s:
+									state= RUNNING'''
+
+
+
 			if event.type == pygame.KEYUP:
 				if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
 					hero.is_move = False
@@ -76,14 +211,14 @@ def startLevelGame(level, screen, font):
 		gate_sprites.draw(screen)
 		food_sprites.draw(screen)
 		for ghost in ghost_sprites:
-			# 幽灵随机运动(效果不好且有BUG)
+			# 幽灵随机运动(效果不好且有BUG) 유령 무작위 이(나쁜효과 및버그)
 			'''
 			res = ghost.update(wall_sprites, None)
 			while not res:
 				ghost.changeSpeed(ghost.randomDirection())
 				res = ghost.update(wall_sprites, None)
 			'''
-			# 指定幽灵运动路径
+			# 指定幽灵运动路径(유령 경로이 )
 			if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
 				ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
 				ghost.tracks_loc[1] += 1
@@ -121,13 +256,13 @@ def startLevelGame(level, screen, font):
 	return is_clearance
 
 
-'''显示文字'''
+'''显示文字텍스트 이름?'''
 def showText(screen, font, is_clearance, flag=False):
 	clock = pygame.time.Clock()
 	msg = 'Game Over!' if not is_clearance else 'Congratulations, you won!'
 	positions = [[235, 233], [65, 303], [170, 333]] if not is_clearance else [[145, 233], [65, 303], [170, 333]]
 	surface = pygame.Surface((400, 200))
-	surface.set_alpha(10)
+	surface.set_alpha(10)#투명
 	surface.fill((128, 128, 128))
 	screen.blit(surface, (100, 200))
 	texts = [font.render(msg, True, WHITE),
@@ -150,13 +285,20 @@ def showText(screen, font, is_clearance, flag=False):
 				elif event.key == pygame.K_ESCAPE:
 					sys.exit()
 					pygame.quit()
+
+				elif event.key == pygame.K_a:
+					sys.exit()
+					pygame.quit()
+
+
+
 		for idx, (text, position) in enumerate(zip(texts, positions)):
 			screen.blit(text, position)
 		pygame.display.flip()
 		clock.tick(10)
 
 
-'''初始化'''
+'''初始化(초기)'''
 def initialize():
 	pygame.init()
 	icon_image = pygame.image.load(ICONPATH)
@@ -166,11 +308,11 @@ def initialize():
 	return screen
 
 
-'''主函数'''
+'''主函数(주요기)'''
 def main(screen):
-	pygame.mixer.init()
+	'''pygame.mixer.init()
 	pygame.mixer.music.load(BGMPATH)
-	pygame.mixer.music.play(-1, 0.0)
+	pygame.mixer.music.play(-1, 0.0)'''
 	pygame.font.init()
 	font_small = pygame.font.Font(FONTPATH, 18)
 	font_big = pygame.font.Font(FONTPATH, 24)
