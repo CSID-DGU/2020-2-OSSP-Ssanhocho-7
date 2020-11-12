@@ -30,9 +30,37 @@ ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
 
+pacman_orig = pygame.image.load('resources/images/pacman.png')
+
+# pacman
+pacman_right = pygame.transform.rotate(pacman_orig, 0)
+pacman_left = pygame.transform.rotate(pacman_orig, 180)
+pacman_up = pygame.transform.rotate(pacman_orig, 90)
+pacman_down = pygame.transform.rotate(pacman_orig, 270)
+obj_x = 287
+obj_y = 439
+
+# Pacman movement
+MOVE_UP = 1
+MOVE_DOWN = 2
+MOVE_RIGHT = 3
+MOVE_LEFT = 4
+next_move = 0
+change_x = 0
+change_y = 0
+
 
 '''开始某一关游戏'''
 def startLevelGame(level, screen, font):
+	# Pacman movement
+	MOVE_UP = 1
+	MOVE_DOWN = 2
+	MOVE_RIGHT = 3
+	MOVE_LEFT = 4
+	next_move = 0
+	change_x = 0
+	change_y = 0
+
 	clock = pygame.time.Clock()
 	SCORE = 0
 	wall_sprites = level.setupWalls(SKYBLUE)
@@ -40,6 +68,15 @@ def startLevelGame(level, screen, font):
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
+	#for hero in hero_sprites:
+		#pacman_right = hero.changeSpeed([1,0])
+		#pacman_left = hero.changeSpeed([-1,0])
+		#pacman_up = hero.changeSpeed([0,-1])
+		#pacman_down = hero.changeSpeed([0,1])
+	obj_x = 287
+	obj_y = 439
+
+	KeepGoing = True
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -50,21 +87,83 @@ def startLevelGame(level, screen, font):
 					for hero in hero_sprites:
 						hero.changeSpeed([-1, 0])
 						hero.is_move = True
+						change_x=-1
+						change_y=0
+						print(change_x,change_y)
+						#change_x = -1
+						#change_y = 0
+						#next_move = 0
+					#if pygame.sprite.spritecollide(hero, wall_sprites, False):
+						#next_move = MOVE_LEFT
+					#for hero in hero_sprites:
+						#hero.changeSpeed([-1,0])
+						#hero.is_move = True
 				elif event.key == pygame.K_RIGHT:
 					for hero in hero_sprites:
 						hero.changeSpeed([1, 0])
 						hero.is_move = True
+						change_x=1
+						change_y=0
+						print(change_x,change_y)
 				elif event.key == pygame.K_UP:
 					for hero in hero_sprites:
 						hero.changeSpeed([0, -1])
 						hero.is_move = True
+						change_x=0
+						change_y=-1
+						print(change_x,change_y)
 				elif event.key == pygame.K_DOWN:
 					for hero in hero_sprites:
 						hero.changeSpeed([0, 1])
 						hero.is_move = True
-			if event.type == pygame.KEYUP:
-				if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
-					hero.is_move = False
+						change_x=0
+						change_y=1
+						print(change_x,change_y)
+			#if event.type == pygame.KEYUP:
+				#if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
+					#hero.is_move = False
+					#KeepGoing = False
+				#if event.key == pygame.K_LEFT:
+					#for hero in hero_sprites:
+						#hero.changeSpeed([-1
+						#hero.is_move = True
+		#if next_move > 0:
+			#if next_move == MOVE_UP and MAZE_ARR[obj_y-1][obj_x] != '#':
+				#change_x = 0
+				#change_y = -1
+			#if next_move == MOVE_DOWN and obj_x-1 != level.setupWalls.wall_positions() and (obj_y) != level.setupWalls(SKYBLUE):
+				#change_x = 0
+				#change_y = 1
+			#if next_move == MOVE_LEFT and obj_x-1 != level.setupWalls.wall_positions() and (obj_y) != level.setupWalls(SKYBLUE):
+				#change_x = -1
+				#change_y = 0
+			#elif next_move == MOVE_RIGHT and MAZE_ARR[obj_y][obj_x+1] != '#':
+				#change_x = 1
+				#change_y = 0
+		#if MAZE_ARR[obj_y+change_y][obj_x+change_x] == '#':
+			#change_x = 0
+			#change_y = 0
+		#elif MAZE_ARR[obj_y+change_y][obj_x+change_x] == '@':
+		   # MAZE_ARR[obj_y+change_y][obj_x+change_x] = ' '
+		   # score += 1
+		   # if score == target_score:
+		     #   keepGoing = False
+		if change_x == 1 and change_y==0: #right
+			for hero in hero_sprites:
+				hero.changeSpeed([1,0])
+		elif change_x == -1 and change_y==0: #left
+			for hero in hero_sprites:
+				hero.changeSpeed([-1,0])
+		elif change_x==0 and change_y == -1: #up
+			for hero in hero_sprites:
+				hero.changeSpeed([0,-1])
+		elif change_x==0 and change_y == 1: #down
+			for hero in hero_sprites:
+				hero.changeSpeed([0,1])
+		obj_x += change_x
+		obj_y += change_y
+		print(obj_x,obj_y)
+
 		screen.fill(BLACK)
 		for hero in hero_sprites:
 			hero.update(wall_sprites, gate_sprites)
