@@ -14,6 +14,12 @@ def setupWalls_easy(self, wall_color):
                       [480, 240, 36, 6], [510, 180, 6, 66], # 아래 오른쪽 L자 좌우반전한것
                       [150, 240, 6, 66], # 맨 아래 왼쪽 |
                       [420, 240, 6, 66], # 맨 아래 오른쪽 |
+                      [210, 240, 154, 6], # ghost zone 아래 가운데 -----
+                      [210, 120, 36, 6], # ghost zone start
+                      [210, 120, 6, 66],
+                      [210, 180, 154, 6],
+                      [330, 120, 36, 6],
+                      [360, 120, 6, 66], # ghost zone fin
                       ]
     for wall_position in wall_positions:
         wall = Wall(*wall_position, wall_color)
@@ -67,3 +73,16 @@ def setupWalls_hard(self, wall_color):
         wall = Wall(*wall_position, wall_color)
         self.wall_sprites.add(wall)
     return self.wall_sprites
+
+
+    # 문 만들기
+	def setupGate_easy(self, gate_color):
+		self.gate_sprites = pygame.sprite.Group()
+		self.gate_sprites.add(Wall(246, 122, 84, 2, gate_color))
+		return self.gate_sprites
+
+
+	def setupGate_hard(self, gate_color):
+		self.gate_sprites = pygame.sprite.Group()
+		self.gate_sprites.add(Wall(276, 242, 54, 2, gate_color))
+		return self.gate_sprites
