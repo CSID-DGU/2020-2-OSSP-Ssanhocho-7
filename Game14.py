@@ -29,6 +29,8 @@ BlinkyPATH = os.path.join(os.getcwd(), 'resources/images/Blinky.png')
 ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
+
+
 img =pygame.image.load('resources/images/pacman.png')
 RUNNING, PAUSE = 0, 1
 state = RUNNING
@@ -84,11 +86,7 @@ def startLevelGame(level, screen, font):
 	is_clearance = False
 
 
-	runn=True
-
 	while True:
-
-
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
@@ -111,78 +109,48 @@ def startLevelGame(level, screen, font):
 						hero.changeSpeed([0, 1])
 						hero.is_move = True
 
-	#일시정지 기능 만드는 중 11/11 창dy
+	#일시정지 기능 개선완료
 				elif event.key == pygame.K_a:
 						sys.exit()
 						pygame.quit()
 				elif event.key == pygame.K_ESCAPE:
 						runn=True
+
+						while runn:
+							for event in pygame.event.get():
+								if event.type == pygame.QUIT:
+									sys.exit(-1)
+									pygame.quit()
+								if event.type == pygame.KEYDOWN:
+									if event.key == pygame.K_LEFT:
+										for hero in hero_sprites:
+											hero.changeSpeed([-1, 0])
+											hero.is_move = True
+									elif event.key == pygame.K_RIGHT:
+										for hero in hero_sprites:
+											hero.changeSpeed([1, 0])
+											hero.is_move = True
+									elif event.key == pygame.K_UP:
+										for hero in hero_sprites:
+											hero.changeSpeed([0, -1])
+											hero.is_move = True
+									elif event.key == pygame.K_DOWN:
+										for hero in hero_sprites:
+											hero.changeSpeed([0, 1])
+											hero.is_move = True
+									elif event.key == pygame.K_ESCAPE:
+											runn=False
+									#게임 재시작
+									elif event.key == pygame.K_r:
+											main(initialize())
+									elif event.key == pygame.K_a:
+											sys.exit()
+											pygame.quit()
+
 				elif event.type == pygame.QUIT:
 					sys.exit()
 					pygame.quit()
-				elif event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_RETURN:
-						if is_clearanpce:
-							if not flag:
-								return
-							else:
-								main(initialize())
-						else:
-							main(initialize())
-					elif event.key == pygame.K_ESCAPE:
-						sys.exit()
-						pygame.quit()
 
-					elif event.key == pygame.K_a:
-						sys.exit()
-						pygame.quit()
-		while runn:
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					sys.exit(-1)
-					pygame.quit()
-				if event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_LEFT:
-						for hero in hero_sprites:
-							hero.changeSpeed([-1, 0])
-							hero.is_move = True
-					elif event.key == pygame.K_RIGHT:
-						for hero in hero_sprites:
-							hero.changeSpeed([1, 0])
-							hero.is_move = True
-					elif event.key == pygame.K_UP:
-						for hero in hero_sprites:
-							hero.changeSpeed([0, -1])
-							hero.is_move = True
-					elif event.key == pygame.K_DOWN:
-						for hero in hero_sprites:
-							hero.changeSpeed([0, 1])
-							hero.is_move = True
-					elif event.key == pygame.K_ESCAPE:
-							sys.exit()
-							pygame.quit()
-					elif event.key == pygame.K_a:
-							runn=False
-
-					elif event.type == pygame.QUIT:
-						sys.exit()
-						pygame.quit()
-					elif event.type == pygame.KEYDOWN:
-						if event.key == pygame.K_RETURN:
-							if is_clearance:
-								if not flag:
-									return
-								else:
-									main(initialize())
-							else:
-								main(initialize())
-						elif event.key == pygame.K_ESCAPE:
-							sys.exit()
-							pygame.quit()
-
-						elif event.key == pygame.K_a:
-							sys.exit()
-							pygame.quit()
 
 
 					'''while True :
