@@ -29,8 +29,8 @@ BlinkyPATH = os.path.join(os.getcwd(), 'resources/images/Blinky.png')
 ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
-
-
+HEIGHT=606
+WIDTH=606
 img =pygame.image.load('resources/images/pacman.png')
 RUNNING, PAUSE = 0, 1
 state = RUNNING
@@ -84,8 +84,6 @@ def startLevelGame(level, screen, font):
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
-
-
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -117,6 +115,23 @@ def startLevelGame(level, screen, font):
 						runn=True
 
 						while runn:
+							#일시정지화면추가가
+							yongFont = pygame.font.Font( None,50)
+							yongtitle=yongFont.render("PRESS ESC KEY => START",True,WHITE)
+							yongtitle2=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
+							#Rect생성
+							yongRect=yongtitle.get_rect()
+							yongRect2=yongtitle2.get_rect()
+							#yongRect.centerx=round(WIDTH/2)
+							yongRect.centerx=round(WIDTH/2)
+							yongRect.centery=round(HEIGHT/3)
+							yongRect2.centerx=round(WIDTH/2)
+							yongRect2.centery=round(HEIGHT/1.5)
+							pygame.display.flip()
+							screen.fill(BLACK)
+							screen.blit(yongtitle,yongRect)
+							screen.blit(yongtitle2,yongRect2)
+
 							for event in pygame.event.get():
 								if event.type == pygame.QUIT:
 									sys.exit(-1)
@@ -150,18 +165,6 @@ def startLevelGame(level, screen, font):
 				elif event.type == pygame.QUIT:
 					sys.exit()
 					pygame.quit()
-
-
-
-					'''while True :
-						#for event in pygame.event.get():
-							if event.type == pygame.quit():break
-							if event.type == pygame.KEYDOWN:
-								if event.key == pygame.K_p:
-									state=PAUSE
-									print(state)
-								if event.key == pygame.K_s:
-									state= RUNNING'''
 
 
 
@@ -271,7 +274,7 @@ def initialize():
 	pygame.init()
 	icon_image = pygame.image.load(ICONPATH)
 	pygame.display.set_icon(icon_image)
-	screen = pygame.display.set_mode([606, 606])
+	screen = pygame.display.set_mode([WIDTH, HEIGHT])
 	pygame.display.set_caption('Pacman-微信公众号Charles的皮卡丘')
 	return screen
 
