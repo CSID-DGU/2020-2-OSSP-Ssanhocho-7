@@ -85,146 +85,167 @@ def startLevelGame(level, screen, font):
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
 	while True:
+		yongFont = pygame.font.Font( None,50)
+		yongtitle=yongFont.render("PRESS S KEY => START",True,WHITE)
+		yongtitle2=yongFont.render("making...",True,WHITE)
+		#Rect생성
+		yongRect=yongtitle.get_rect()
+		yongRect2=yongtitle2.get_rect()
+		#yongRect.centerx=round(WIDTH/2)
+		yongRect.centerx=round(WIDTH/2)
+		yongRect.centery=round(HEIGHT/3)
+		yongRect2.centerx=round(WIDTH/2)
+		yongRect2.centery=round(HEIGHT/1.5)
+		pygame.display.flip()
+		screen.fill(BLACK)
+		screen.blit(yongtitle,yongRect)
+		screen.blit(yongtitle2,yongRect2)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
 				pygame.quit()
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT:
-					for hero in hero_sprites:
-						hero.changeSpeed([-1, 0])
-						hero.is_move = True
-				elif event.key == pygame.K_RIGHT:
-					for hero in hero_sprites:
-						hero.changeSpeed([1, 0])
-						hero.is_move = True
-				elif event.key == pygame.K_UP:
-					for hero in hero_sprites:
-						hero.changeSpeed([0, -1])
-						hero.is_move = True
-				elif event.key == pygame.K_DOWN:
-					for hero in hero_sprites:
-						hero.changeSpeed([0, 1])
-						hero.is_move = True
+				if event.key == pygame.K_s:
+					ff=True
+					while ff:
+						for event in pygame.event.get():
+							if event.type == pygame.QUIT:
+								sys.exit(-1)
+								pygame.quit()
+							if event.type == pygame.KEYDOWN:
+								if event.key == pygame.K_LEFT:
+									for hero in hero_sprites:
+										hero.changeSpeed([-1, 0])
+										hero.is_move = ff
+								elif event.key == pygame.K_RIGHT:
+									for hero in hero_sprites:
+										hero.changeSpeed([1, 0])
+										hero.is_move = ff
+								elif event.key == pygame.K_UP:
+									for hero in hero_sprites:
+										hero.changeSpeed([0, -1])
+										hero.is_move = ff
+								elif event.key == pygame.K_DOWN:
+									for hero in hero_sprites:
+										hero.changeSpeed([0, 1])
+										hero.is_move = ff
+					#일시정지 기능 만드는 중 11/11 창dy
+								elif event.key == pygame.K_a:
+										sys.exit()
+										pygame.quit()
+								elif event.key == pygame.K_ESCAPE:
+										runn=True
+										#여기 제시작
+										while runn:
+											yongFont = pygame.font.Font( None,50)
+											yongtitle4=yongFont.render("PRESS ESC KEY => START",True,WHITE)
+											yongtitle5=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
+											#Rect생성
+											yongRect4=yongtitle4.get_rect()
+											yongRect5=yongtitle5.get_rect()
+											#yongRect.centerx=round(WIDTH/2)
+											yongRect4.centerx=round(WIDTH/2)
+											yongRect4.centery=round(HEIGHT/3)
+											yongRect5.centerx=round(WIDTH/2)
+											yongRect5.centery=round(HEIGHT/1.5)
+											pygame.display.flip()
+											screen.fill(BLACK)
+											screen.blit(yongtitle4,yongRect4)
+											screen.blit(yongtitle5,yongRect5)
+											for event in pygame.event.get():
+												if event.type == pygame.QUIT:
+													sys.exit(-1)
+													pygame.quit()
+												if event.type == pygame.KEYDOWN:
+													if event.key == pygame.K_LEFT:
+														for hero in hero_sprites:
+															hero.changeSpeed([-1, 0])
+															hero.is_move = True
+													elif event.key == pygame.K_RIGHT:
+														for hero in hero_sprites:
+															hero.changeSpeed([1, 0])
+															hero.is_move = True
+													elif event.key == pygame.K_UP:
+														for hero in hero_sprites:
+															hero.changeSpeed([0, -1])
+															hero.is_move = True
+													elif event.key == pygame.K_DOWN:
+														for hero in hero_sprites:
+															hero.changeSpeed([0, 1])
+															hero.is_move = True
+													elif event.key == pygame.K_ESCAPE:
+															runn=False
 
-	#일시정지 기능 개선완료
-				elif event.key == pygame.K_a:
-						sys.exit()
-						pygame.quit()
-				elif event.key == pygame.K_ESCAPE:
-						runn=True
+													elif event.key == pygame.K_a:
+															sys.exit()
+															pygame.quit()
+													elif event.key == pygame.K_r:
+															main(initialize())
 
-						while runn:
-							#일시정지화면추가가
-							yongFont = pygame.font.Font( None,50)
-							yongtitle=yongFont.render("PRESS ESC KEY => START",True,WHITE)
-							yongtitle2=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
-							#Rect생성
-							yongRect=yongtitle.get_rect()
-							yongRect2=yongtitle2.get_rect()
-							#yongRect.centerx=round(WIDTH/2)
-							yongRect.centerx=round(WIDTH/2)
-							yongRect.centery=round(HEIGHT/3)
-							yongRect2.centerx=round(WIDTH/2)
-							yongRect2.centery=round(HEIGHT/1.5)
-							pygame.display.flip()
-							screen.fill(BLACK)
-							screen.blit(yongtitle,yongRect)
-							screen.blit(yongtitle2,yongRect2)
-
-							for event in pygame.event.get():
-								if event.type == pygame.QUIT:
-									sys.exit(-1)
+								elif event.type == pygame.QUIT:
+									sys.exit()
 									pygame.quit()
-								if event.type == pygame.KEYDOWN:
-									if event.key == pygame.K_LEFT:
-										for hero in hero_sprites:
-											hero.changeSpeed([-1, 0])
-											hero.is_move = True
-									elif event.key == pygame.K_RIGHT:
-										for hero in hero_sprites:
-											hero.changeSpeed([1, 0])
-											hero.is_move = True
-									elif event.key == pygame.K_UP:
-										for hero in hero_sprites:
-											hero.changeSpeed([0, -1])
-											hero.is_move = True
-									elif event.key == pygame.K_DOWN:
-										for hero in hero_sprites:
-											hero.changeSpeed([0, 1])
-											hero.is_move = True
-									elif event.key == pygame.K_ESCAPE:
-											runn=False
-									#게임 재시작
-									elif event.key == pygame.K_r:
-											main(initialize())
-									elif event.key == pygame.K_a:
-											sys.exit()
-											pygame.quit()
 
-				elif event.type == pygame.QUIT:
-					sys.exit()
-					pygame.quit()
+							if event.type == pygame.KEYUP:
+								if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
+									hero.is_move != ff
+						screen.fill(BLACK)
+
+						for hero in hero_sprites:
+							hero.update(wall_sprites, gate_sprites)
+						hero_sprites.draw(screen)
+						for hero in hero_sprites:
+							food_eaten = pygame.sprite.spritecollide(hero, food_sprites, True)
+						SCORE += len(food_eaten)
+						wall_sprites.draw(screen)
+						gate_sprites.draw(screen)
+						food_sprites.draw(screen)
+						for ghost in ghost_sprites:
+							# 幽灵随机运动(效果不好且有BUG) 유령 무작위 이(나쁜효과 및버그)
+							'''
+							res = ghost.update(wall_sprites, None)
+							while not res:
+								ghost.changeSpeed(ghost.randomDirection())
+								res = ghost.update(wall_sprites, None)
+							'''
+							# 指定幽灵运动路径(유령 경로이 )
+							if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
+								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
+								ghost.tracks_loc[1] += 1
+							else:
+								if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
+									ghost.tracks_loc[0] += 1
+								elif ghost.role_name == 'Clyde':
+									ghost.tracks_loc[0] = 2
+								else:
+									ghost.tracks_loc[0] = 0
+								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
+								ghost.tracks_loc[1] = 0
+							if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
+								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
+							else:
+								if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
+									loc0 = ghost.tracks_loc[0] + 1
+								elif ghost.role_name == 'Clyde':
+									loc0 = 2
+								else:
+									loc0 = 0
+								ghost.changeSpeed(ghost.tracks[loc0][0: 2])
+							ghost.update(wall_sprites, None)
+						ghost_sprites.draw(screen)
+						score_text = font.render("Score: %s" % SCORE, True, RED)
+						screen.blit(score_text, [10, 10])
+						if len(food_sprites) == 0:
+							is_clearance = True
+							break
+						if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, False):
+							is_clearance = False
+							break
+						pygame.display.flip()
+						clock.tick(10)
+					return is_clearance
 
 
-
-			if event.type == pygame.KEYUP:
-				if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
-					hero.is_move = False
-		screen.fill(BLACK)
-		for hero in hero_sprites:
-			hero.update(wall_sprites, gate_sprites)
-		hero_sprites.draw(screen)
-		for hero in hero_sprites:
-			food_eaten = pygame.sprite.spritecollide(hero, food_sprites, True)
-		SCORE += len(food_eaten)
-		wall_sprites.draw(screen)
-		gate_sprites.draw(screen)
-		food_sprites.draw(screen)
-		for ghost in ghost_sprites:
-			# 幽灵随机运动(效果不好且有BUG) 유령 무작위 이(나쁜효과 및버그)
-			'''
-			res = ghost.update(wall_sprites, None)
-			while not res:
-				ghost.changeSpeed(ghost.randomDirection())
-				res = ghost.update(wall_sprites, None)
-			'''
-			# 指定幽灵运动路径(유령 경로이 )
-			if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
-				ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
-				ghost.tracks_loc[1] += 1
-			else:
-				if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
-					ghost.tracks_loc[0] += 1
-				elif ghost.role_name == 'Clyde':
-					ghost.tracks_loc[0] = 2
-				else:
-					ghost.tracks_loc[0] = 0
-				ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
-				ghost.tracks_loc[1] = 0
-			if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
-				ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
-			else:
-				if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
-					loc0 = ghost.tracks_loc[0] + 1
-				elif ghost.role_name == 'Clyde':
-					loc0 = 2
-				else:
-					loc0 = 0
-				ghost.changeSpeed(ghost.tracks[loc0][0: 2])
-			ghost.update(wall_sprites, None)
-		ghost_sprites.draw(screen)
-		score_text = font.render("Score: %s" % SCORE, True, RED)
-		screen.blit(score_text, [10, 10])
-		if len(food_sprites) == 0:
-			is_clearance = True
-			break
-		if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, False):
-			is_clearance = False
-			break
-		pygame.display.flip()
-		clock.tick(10)
-	return is_clearance
 
 
 '''显示文字텍스트 이름?'''
