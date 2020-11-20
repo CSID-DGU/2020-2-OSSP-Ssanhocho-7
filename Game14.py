@@ -12,6 +12,7 @@ import pygame
 import Levels
 
 
+
 '''定义一些必要的参数(몇가지 주요배개변수 )'''
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -86,25 +87,39 @@ def startLevelGame(level, screen, font):
 	is_clearance = False
 	while True:
 		yongFont = pygame.font.Font( None,50)
-		yongtitle=yongFont.render("PRESS S KEY => START",True,WHITE)
-		yongtitle2=yongFont.render("making...",True,WHITE)
+		yongtitle=yongFont.render("PRESS E KEY => EASYMODE START",True,WHITE)
+		yongtitle2=yongFont.render("PRESS S KEY => start",True,WHITE)
+		yongtitle3=yongFont.render("PRESS H KEY => HARDMODE START",True,WHITE)
 		#Rect생성
 		yongRect=yongtitle.get_rect()
 		yongRect2=yongtitle2.get_rect()
+		yongRect3=yongtitle3.get_rect()
 		#yongRect.centerx=round(WIDTH/2)
 		yongRect.centerx=round(WIDTH/2)
 		yongRect.centery=round(HEIGHT/3)
+
 		yongRect2.centerx=round(WIDTH/2)
 		yongRect2.centery=round(HEIGHT/1.5)
+
+		yongRect3.centerx=round(WIDTH/2)
+		yongRect3.centery=round(HEIGHT/6)
+
 		pygame.display.flip()
 		screen.fill(BLACK)
 		screen.blit(yongtitle,yongRect)
 		screen.blit(yongtitle2,yongRect2)
+		screen.blit(yongtitle3,yongRect3)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
 				pygame.quit()
 			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_h:
+					level.NUMLEVELS=2
+					main1(initialize())
+				if event.key == pygame.K_e:
+					level.NUMLEVELS=1
+					main(initialize())
 				if event.key == pygame.K_s:
 					ff=True
 					while ff:
@@ -138,20 +153,20 @@ def startLevelGame(level, screen, font):
 										#여기 제시작
 										while runn:
 											yongFont = pygame.font.Font( None,50)
-											yongtitle4=yongFont.render("PRESS ESC KEY => START",True,WHITE)
-											yongtitle5=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
+											yongtitle5=yongFont.render("PRESS ESC KEY => START",True,WHITE)
+											yongtitle6=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
 											#Rect생성
-											yongRect4=yongtitle4.get_rect()
 											yongRect5=yongtitle5.get_rect()
+											yongRect6=yongtitle6.get_rect()
 											#yongRect.centerx=round(WIDTH/2)
-											yongRect4.centerx=round(WIDTH/2)
-											yongRect4.centery=round(HEIGHT/3)
 											yongRect5.centerx=round(WIDTH/2)
-											yongRect5.centery=round(HEIGHT/1.5)
+											yongRect5.centery=round(HEIGHT/3)
+											yongRect6.centerx=round(WIDTH/2)
+											yongRect6.centery=round(HEIGHT/1.5)
 											pygame.display.flip()
 											screen.fill(BLACK)
-											screen.blit(yongtitle4,yongRect4)
 											screen.blit(yongtitle5,yongRect5)
+											screen.blit(yongtitle6,yongRect6)
 											for event in pygame.event.get():
 												if event.type == pygame.QUIT:
 													sys.exit(-1)
@@ -306,18 +321,37 @@ def main(screen):
 	pygame.mixer.music.load(BGMPATH)
 	pygame.mixer.music.play(-1, 0.0)'''
 	pygame.font.init()
+	Levels.NUMLEVELS=1
 	font_small = pygame.font.Font(FONTPATH, 18)
 	font_big = pygame.font.Font(FONTPATH, 24)
-	for num_level in range(1, Levels.NUMLEVELS+1):
-		if num_level == 1:
-			level = Levels.Level1()
-			is_clearance = startLevelGame(level, screen, font_small)
-			if num_level == Levels.NUMLEVELS:
-				showText(screen, font_big, is_clearance, True)
-			else:
-				showText(screen, font_big, is_clearance)
+	#for num_level in range(1, Levels.NUMLEVELS+1):
+	if Levels.NUMLEVELS == 1:
+		level = Levels.Level1()
+		is_clearance = startLevelGame(level, screen, font_small)
+		if num_level == Levels.NUMLEVELS:
+			showText(screen, font_big, is_clearance, True)
+		else:
+			showText(screen, font_big, is_clearance)
 
+
+def main1(screen):
+	'''pygame.mixer.init()
+	pygame.mixer.music.load(BGMPATH)
+	pygame.mixer.music.play(-1, 0.0)'''
+	pygame.font.init()
+	Levels.NUMLEVELS=2
+	font_small = pygame.font.Font(FONTPATH, 18)
+	font_big = pygame.font.Font(FONTPATH, 24)
+
+	if Levels.NUMLEVELS == 2:
+		level = Levels.Level2()
+		is_clearance = startLevelGame(level, screen, font_small)
+		if num_level == Levels.NUMLEVELS:
+			showText(screen, font_big, is_clearance, True)
+		else:
+			showText(screen, font_big, is_clearance)
 
 '''test'''
+
 if __name__ == '__main__':
-	main(initialize())
+		main(initialize())
