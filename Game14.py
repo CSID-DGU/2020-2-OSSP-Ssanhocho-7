@@ -10,6 +10,7 @@ import os
 import sys
 import pygame
 import Levels
+import Fever
 
 
 '''定义一些必要的参数'''
@@ -29,137 +30,78 @@ BlinkyPATH = os.path.join(os.getcwd(), 'resources/images/Blinky.png')
 ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
-
-'''pacman_orig = pygame.image.load('resources/images/pacman.png')
-
-# pacman
-pacman_right = pygame.transform.rotate(pacman_orig, 0)
-pacman_left = pygame.transform.rotate(pacman_orig, 180)
-pacman_up = pygame.transform.rotate(pacman_orig, 90)
-pacman_down = pygame.transform.rotate(pacman_orig, 270)
-obj_x = 287
-obj_y = 439
-
-# Pacman movement
-MOVE_UP = 1
-MOVE_DOWN = 2
-MOVE_RIGHT = 3
-MOVE_LEFT = 4
-next_move = 0
-change_x = 0
-change_y = 0'''
-
-
+MODE = Levels.NUMLEVELS
+SCORE=0
+INIT=0
+LIFE=3
 '''开始某一关游戏'''
 def startLevelGame(level, screen, font):
-	# Pacman movement
-	'''MOVE_UP = 1
-	MOVE_DOWN = 2
-	MOVE_RIGHT = 3
-	MOVE_LEFT = 4
-	next_move = 0'''
+
 	change_x = 0
 	change_y = 0
-
+	global MODE
 	clock = pygame.time.Clock()
-	SCORE = 0
-	MODE=Levels.NUMLEVELS
+	global SCORE
+	global LIFE
 	wall_sprites = level.setupWalls(SKYBLUE)
 	gate_sprites = level.setupGate(WHITE)
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
-	#for hero in hero_sprites:
-		#pacman_right = hero.changeSpeed([1,0])
-		#pacman_left = hero.changeSpeed([-1,0])
-		#pacman_up = hero.changeSpeed([0,-1])
-		#pacman_down = hero.changeSpeed([0,1])
+	Fever = False   # 피버 off
 	obj_x = 287
 	obj_y = 439
 
-	#KeepGoing = True
 	while True:
+		if SCORE % 1000 == 0:
+			fever=True #1000점 달성 피버
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
 				pygame.quit()
+
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
+					print("왼쪽 키")
 					for hero in hero_sprites:
-						hero.changeSpeed([-0.5, 0])
-						hero.is_move = True
 						change_x=-0.5
 						change_y=0
+						hero.changeSpeed([-0.5, 0])
+						hero.is_move = True
 						print(change_x,change_y)
-						#change_x = -1
-						#change_y = 0
-						#next_move = 0
-					#if pygame.sprite.spritecollide(hero, wall_sprites, False):
-						#next_move = MOVE_LEFT
-					#for hero in hero_sprites:
-						#hero.changeSpeed([-1,0])
-						#hero.is_move = True
+
 				elif event.key == pygame.K_RIGHT:
+					print("오른쪽 키 ")
 					for hero in hero_sprites:
 						hero.changeSpeed([0.5, 0])
 						hero.is_move = True
 						change_x=0.5
 						change_y=0
 						print(change_x,change_y)
-						#if obj_x+1 == wall_sprites:
-							#next_move = MOVE_RIGHT
+
 				elif event.key == pygame.K_UP:
+					print("위쪽 키")
 					for hero in hero_sprites:
 						hero.changeSpeed([0, -0.5])
 						hero.is_move = True
 						change_x=0
 						change_y=-0.5
 						print(change_x,change_y)
+
 				elif event.key == pygame.K_DOWN:
+					print("아래쪽 키")
 					for hero in hero_sprites:
 						hero.changeSpeed([0, 0.5])
 						hero.is_move = True
 						change_x=0
 						change_y=0.5
 						print(change_x,change_y)
+
 			if event.type == pygame.KEYUP:
 				if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
 					hero.is_move = True
+					print("키업 상태")
 
-		#if next_move > 0:
-			#if next_move == MOVE_UP and MAZE_ARR[obj_y-1][obj_x] != '#':
-				#change_x = 0
-				#change_y = -1
-			#if next_move == MOVE_DOWN and obj_x-1 != level.setupWalls.wall_positions() and (obj_y) != level.setupWalls(SKYBLUE):
-				#change_x = 0
-				#change_y = 1
-			#if next_move == MOVE_LEFT and obj_x-1 != level.setupWalls.wall_positions() and (obj_y) != level.setupWalls(SKYBLUE):
-				#change_x = -1
-				#change_y = 0
-			#elif next_move == MOVE_RIGHT and MAZE_ARR[obj_y][obj_x+1] != '#':
-				#change_x = 1
-				#change_y = 0
-		#if MAZE_ARR[obj_y+change_y][obj_x+change_x] == '#':
-			#change_x = 0
-			#change_y = 0
-		#elif MAZE_ARR[obj_y+change_y][obj_x+change_x] == '@':
-		   # MAZE_ARR[obj_y+change_y][obj_x+change_x] = ' '
-		   # score += 1
-		   # if score == target_score:
-		     #   keepGoing = False
-
-		#if change_x == 1 and change_y==0: #right
-			#for hero in hero_sprites:
-				#hero.changeSpeed([1,0])
-		#elif change_x == -1 and change_y==0: #left
-			#for hero in hero_sprites:
-				#hero.changeSpeed([-0.5,0])
-		#elif change_x==0 and change_y == -0.5: #up
-			#for hero in hero_sprites:
-				#hero.changeSpeed([0,-0.5])
-		#elif change_x==0 and change_y == 0.5: #down
-			#for hero in hero_sprites:
-				#hero.changeSpeed([0,0.5])
 		obj_x += change_x
 		obj_y += change_y
 		print(obj_x,obj_y)
@@ -171,19 +113,13 @@ def startLevelGame(level, screen, font):
 		hero_sprites.draw(screen)
 		for hero in hero_sprites:
 			food_eaten = pygame.sprite.spritecollide(hero, food_sprites, True)
-		SCORE += len(food_eaten)
+		SCORE += 10*len(food_eaten)
 		wall_sprites.draw(screen)
 		gate_sprites.draw(screen)
 		food_sprites.draw(screen)
+
 		for ghost in ghost_sprites:
-			# 幽灵随机运动(效果不好且有BUG)
-			'''
-			res = ghost.update(wall_sprites, None)
-			while not res:
-				ghost.changeSpeed(ghost.randomDirection())
-				res = ghost.update(wall_sprites, None)
-			'''
-			# 指定幽灵运动路径
+
 			if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
 				ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
 				ghost.tracks_loc[1] += 1
@@ -208,17 +144,35 @@ def startLevelGame(level, screen, font):
 				ghost.changeSpeed(ghost.tracks[loc0][0: 2])
 			ghost.update(wall_sprites, None)
 		ghost_sprites.draw(screen)
-		score_text = font.render("Score: %s      %s Mode" % (SCORE,MODE), True, RED)
+		score_text = font.render("Score: %s    %s Mode    LIFE : %s" % (SCORE,MODE,LIFE), True, RED)
 		screen.blit(score_text, [10, 10])
 		if len(food_sprites) == 0:
+			if MODE < 2:
+				MODE += 1
+			elif MODE >= 2:
+				MODE = 1
+				SCORE=0
 			is_clearance = True
 			break
+		if SCORE>=500 and SCORE<=800:
+			if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, True):
+				is_clearance = True
 		if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, False):
+			LIFE -= 1
 			is_clearance = False
+			print("남은 목숨은 ?!?!?!?!?!" , LIFE)
+			if LIFE<=0:
+				SCORE = INIT
+				MODE = 1
+				LIFE=3
 			break
+
 		pygame.display.flip()
 		clock.tick(10)
+
 	return is_clearance
+
+
 
 
 '''显示文字'''
@@ -262,7 +216,8 @@ def initialize():
 	icon_image = pygame.image.load(ICONPATH)
 	pygame.display.set_icon(icon_image)
 	screen = pygame.display.set_mode([606, 606])
-	pygame.display.set_caption('Pacman-微信公众号Charles的皮卡丘')
+	pygame.display.set_caption('OSSP Ssanhocho pacman')
+	level = Levels.Level2()
 	return screen
 
 
@@ -274,14 +229,24 @@ def main(screen):
 	pygame.font.init()
 	font_small = pygame.font.Font(FONTPATH, 18)
 	font_big = pygame.font.Font(FONTPATH, 24)
-	for num_level in range(1, Levels.NUMLEVELS+1):
-		if num_level == 1:
-			level = Levels.Level1()
-			is_clearance = startLevelGame(level, screen, font_small)
-			if num_level == Levels.NUMLEVELS:
-				showText(screen, font_big, is_clearance, True)
-			else:
-				showText(screen, font_big, is_clearance)
+	#for num_level in range(1, Levels.NUMLEVELS+1):
+
+	if MODE == 1:
+		level = Levels.Level1()
+		is_clearance = startLevelGame(level, screen, font_small)
+		if MODE == Levels.NUMLEVELS:
+			showText(screen, font_big, is_clearance, True)
+		else:
+			showText(screen, font_big, is_clearance)
+
+	if MODE == 2:
+		level = Levels.Level2()
+		is_clearance = startLevelGame(level, screen, font_small)
+		if MODE == Levels.NUMLEVELS:
+			showText(screen, font_big, is_clearance, True)
+		else:
+			showText(screen, font_big, is_clearance)
+
 
 
 '''test'''
