@@ -328,7 +328,7 @@ def main(screen):
 	if Levels.NUMLEVELS == 1:
 		level = Levels.Level1()
 		is_clearance = startLevelGame(level, screen, font_small)
-		if num_level == Levels.NUMLEVELS:
+		if Levels.NUMLEVELS == 1:
 			showText(screen, font_big, is_clearance, True)
 		else:
 			showText(screen, font_big, is_clearance)
@@ -346,7 +346,7 @@ def main1(screen):
 	if Levels.NUMLEVELS == 2:
 		level = Levels.Level2()
 		is_clearance = startLevelGame(level, screen, font_small)
-		if num_level == Levels.NUMLEVELS:
+		if Levels.NUMLEVELS == 2:
 			showText(screen, font_big, is_clearance, True)
 		else:
 			showText(screen, font_big, is_clearance)
