@@ -1,12 +1,12 @@
 import pygame
 from Sprites import *
 import random
-
+MODE='randomMode'
 
 
 
 class Level1():
-	NUMLEVELS = 1
+	MODE='EASY'
 	def __init__(self):
 		self.info = 'level1'
 	'''벽 만들기'''
@@ -126,7 +126,7 @@ class Level1():
 		return self.food_sprites
 
 class Level2():
-	NUMLEVELS = 2
+	MODE="HARD"
 	def __init__(self):
 		self.info = 'level2'
 	'''벽 만들기'''

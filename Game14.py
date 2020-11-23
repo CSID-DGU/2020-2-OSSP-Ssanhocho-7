@@ -321,14 +321,14 @@ def main(screen):
 	pygame.mixer.music.load(BGMPATH)
 	pygame.mixer.music.play(-1, 0.0)'''
 	pygame.font.init()
-	Levels.NUMLEVELS=1
+	Levels.MODE='EASY'
 	font_small = pygame.font.Font(FONTPATH, 18)
 	font_big = pygame.font.Font(FONTPATH, 24)
 	#for num_level in range(1, Levels.NUMLEVELS+1):
-	if Levels.NUMLEVELS == 1:
+	if Levels.MODE=='EASY':
 		level = Levels.Level1()
 		is_clearance = startLevelGame(level, screen, font_small)
-		if Levels.NUMLEVELS == 1:
+		if Levels.MODE=='EASY':
 			showText(screen, font_big, is_clearance, True)
 		else:
 			showText(screen, font_big, is_clearance)
@@ -339,14 +339,14 @@ def main1(screen):
 	pygame.mixer.music.load(BGMPATH)
 	pygame.mixer.music.play(-1, 0.0)'''
 	pygame.font.init()
-	Levels.NUMLEVELS=2
+	Levels.MODE='HARD'
 	font_small = pygame.font.Font(FONTPATH, 18)
 	font_big = pygame.font.Font(FONTPATH, 24)
 
-	if Levels.NUMLEVELS == 2:
+	if Levels.MODE=='HARD':
 		level = Levels.Level2()
 		is_clearance = startLevelGame(level, screen, font_small)
-		if Levels.NUMLEVELS == 2:
+		if Levels.MODE=='HARD':
 			showText(screen, font_big, is_clearance, True)
 		else:
 			showText(screen, font_big, is_clearance)
