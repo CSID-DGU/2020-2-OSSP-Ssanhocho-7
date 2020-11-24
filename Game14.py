@@ -36,6 +36,7 @@ img =pygame.image.load('resources/images/pacman.png')
 RUNNING, PAUSE = 0, 1
 state = RUNNING
 pause_text = "일시정지"
+start_image=pygame.image.load('resources/images/starticon.png')
 
 
 #11/11
@@ -77,6 +78,84 @@ class StartScreen:
 
 
 '''开始某一关游戏(특정레벨시 )'''
+def start_scr(screen):
+	yongFont = pygame.font.Font( None,50)
+	yongtitle=yongFont.render("PRESS E KEY => EASYMODE START",True,WHITE)
+	yongtitle2=yongFont.render("PRESS S KEY => start",True,WHITE)
+	yongtitle3=yongFont.render("PRESS H KEY => HARDMODE START",True,WHITE)
+			#Rect생성
+	yongRect=yongtitle.get_rect()
+	yongRect2=yongtitle2.get_rect()
+	yongRect3=yongtitle3.get_rect()
+	#yongRect.centerx=round(WIDTH/2)
+	yongRect.centerx=round(WIDTH/2)
+	yongRect.centery=round(HEIGHT/3)
+
+	yongRect2.centerx=round(WIDTH/2)
+	yongRect2.centery=round(HEIGHT/1.5)
+
+	yongRect3.centerx=round(WIDTH/2)
+	yongRect3.centery=round(HEIGHT/6)
+
+	pygame.display.flip()
+	screen.fill(BLACK)
+	screen.blit(yongtitle,yongRect)
+	screen.blit(yongtitle2,yongRect2)
+	screen.blit(yongtitle3,yongRect3)
+
+	screen.blit(start_image,(WIDTH/2,HEIGHT/2))
+
+
+def pause_scr(screen):
+	yongFont = pygame.font.Font( None,50)
+	yongtitle5=yongFont.render("PRESS ESC KEY => START",True,WHITE)
+	yongtitle6=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
+	#Rect생성
+	yongRect5=yongtitle5.get_rect()
+	yongRect6=yongtitle6.get_rect()
+   #yongRect.centerx=round(WIDTH/2)
+	yongRect5.centerx=round(WIDTH/2)
+	yongRect5.centery=round(HEIGHT/3)
+	yongRect6.centerx=round(WIDTH/2)
+	yongRect6.centery=round(HEIGHT/1.5)
+	pygame.display.flip()
+	screen.fill(BLACK)
+	screen.blit(yongtitle5,yongRect5)
+	screen.blit(yongtitle6,yongRect6)
+
+def restart_screen(screen):
+	runn=True
+	while runn:
+		pause_scr(screen)
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit(-1)
+				pygame.quit()
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_LEFT:
+					for hero in hero_sprites:
+						hero.changeSpeed([-1, 0])
+						hero.is_move = True
+				elif event.key == pygame.K_RIGHT:
+					for hero in hero_sprites:
+						hero.changeSpeed([1, 0])
+						hero.is_move = True
+				elif event.key == pygame.K_UP:
+					for hero in hero_sprites:
+						hero.changeSpeed([0, -1])
+						hero.is_move = True
+				elif event.key == pygame.K_DOWN:
+					for hero in hero_sprites:
+						hero.changeSpeed([0, 1])
+						hero.is_move = True
+				elif event.key == pygame.K_ESCAPE:
+						runn=False
+				elif event.key == pygame.K_a:
+						sys.exit()
+						pygame.quit()
+				elif event.key == pygame.K_r:
+						main(initialize())
+
 def startLevelGame(level, screen, font):
 	clock = pygame.time.Clock()
 	SCORE = 0
@@ -86,29 +165,7 @@ def startLevelGame(level, screen, font):
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
 	while True:
-		yongFont = pygame.font.Font( None,50)
-		yongtitle=yongFont.render("PRESS E KEY => EASYMODE START",True,WHITE)
-		yongtitle2=yongFont.render("PRESS S KEY => start",True,WHITE)
-		yongtitle3=yongFont.render("PRESS H KEY => HARDMODE START",True,WHITE)
-		#Rect생성
-		yongRect=yongtitle.get_rect()
-		yongRect2=yongtitle2.get_rect()
-		yongRect3=yongtitle3.get_rect()
-		#yongRect.centerx=round(WIDTH/2)
-		yongRect.centerx=round(WIDTH/2)
-		yongRect.centery=round(HEIGHT/3)
-
-		yongRect2.centerx=round(WIDTH/2)
-		yongRect2.centery=round(HEIGHT/1.5)
-
-		yongRect3.centerx=round(WIDTH/2)
-		yongRect3.centery=round(HEIGHT/6)
-
-		pygame.display.flip()
-		screen.fill(BLACK)
-		screen.blit(yongtitle,yongRect)
-		screen.blit(yongtitle2,yongRect2)
-		screen.blit(yongtitle3,yongRect3)
+		start_scr(screen)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
@@ -149,54 +206,8 @@ def startLevelGame(level, screen, font):
 										sys.exit()
 										pygame.quit()
 								elif event.key == pygame.K_ESCAPE:
-										runn=True
 										#여기 제시작
-										while runn:
-											yongFont = pygame.font.Font( None,50)
-											yongtitle5=yongFont.render("PRESS ESC KEY => START",True,WHITE)
-											yongtitle6=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
-											#Rect생성
-											yongRect5=yongtitle5.get_rect()
-											yongRect6=yongtitle6.get_rect()
-											#yongRect.centerx=round(WIDTH/2)
-											yongRect5.centerx=round(WIDTH/2)
-											yongRect5.centery=round(HEIGHT/3)
-											yongRect6.centerx=round(WIDTH/2)
-											yongRect6.centery=round(HEIGHT/1.5)
-											pygame.display.flip()
-											screen.fill(BLACK)
-											screen.blit(yongtitle5,yongRect5)
-											screen.blit(yongtitle6,yongRect6)
-											for event in pygame.event.get():
-												if event.type == pygame.QUIT:
-													sys.exit(-1)
-													pygame.quit()
-												if event.type == pygame.KEYDOWN:
-													if event.key == pygame.K_LEFT:
-														for hero in hero_sprites:
-															hero.changeSpeed([-1, 0])
-															hero.is_move = True
-													elif event.key == pygame.K_RIGHT:
-														for hero in hero_sprites:
-															hero.changeSpeed([1, 0])
-															hero.is_move = True
-													elif event.key == pygame.K_UP:
-														for hero in hero_sprites:
-															hero.changeSpeed([0, -1])
-															hero.is_move = True
-													elif event.key == pygame.K_DOWN:
-														for hero in hero_sprites:
-															hero.changeSpeed([0, 1])
-															hero.is_move = True
-													elif event.key == pygame.K_ESCAPE:
-															runn=False
-
-													elif event.key == pygame.K_a:
-															sys.exit()
-															pygame.quit()
-													elif event.key == pygame.K_r:
-															main(initialize())
-
+									 	restart_screen(screen)
 								elif event.type == pygame.QUIT:
 									sys.exit()
 									pygame.quit()
@@ -258,6 +269,8 @@ def startLevelGame(level, screen, font):
 							break
 						pygame.display.flip()
 						clock.tick(10)
+
+
 					return is_clearance
 
 
@@ -286,9 +299,9 @@ def showText(screen, font, is_clearance, flag=False):
 						if not flag:
 							return
 						else:
-							main(initialize())
+							main1(initialize())
 					else:
-						main(initialize())
+						main1(initialize())
 				elif event.key == pygame.K_ESCAPE:
 					sys.exit()
 					pygame.quit()
@@ -343,10 +356,10 @@ def main1(screen):
 	font_small = pygame.font.Font(FONTPATH, 18)
 	font_big = pygame.font.Font(FONTPATH, 24)
 
-	if Levels.MODE=='HARD':
+	if Levels.MODE== 'HARD':
 		level = Levels.Level2()
 		is_clearance = startLevelGame(level, screen, font_small)
-		if Levels.MODE=='HARD':
+		if Levels.MODE== 'HARD':
 			showText(screen, font_big, is_clearance, True)
 		else:
 			showText(screen, font_big, is_clearance)
