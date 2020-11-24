@@ -11,9 +11,11 @@ import sys
 import pygame
 import Levels
 import Fever
+import time
 
 
 '''定义一些必要的参数'''
+#색 지정
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -22,6 +24,8 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 PURPLE = (255, 0, 255)
 SKYBLUE = (0, 191, 255)
+
+#path 지정
 BGMPATH = os.path.join(os.getcwd(), 'resources/sounds/bg.mp3')
 ICONPATH = os.path.join(os.getcwd(), 'resources/images/icon.png')
 FONTPATH = os.path.join(os.getcwd(), 'resources/font/ALGER.TTF')
@@ -30,31 +34,57 @@ BlinkyPATH = os.path.join(os.getcwd(), 'resources/images/Blinky.png')
 ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
-MODE = Levels.NUMLEVELS
-SCORE=0
-INIT=0
+#좌표 설정
+pack_x = 287
+pack_y = 439
+MOVE_LEFT=[-0.5,0]
+MOVE_RIGHT=[0.5,0]
+MOVE_UP=[0,-0.5]
+MOVE_DOWN=[0,0.5]
+INFO = [10, 10]
+
+#초기값지정
+TIME_INIT=0.0
+SCORE_INIT=0
+SCORE_MUL=10
+LIFE_INIT=3
 LIFE=3
+SCORE=0
+startTime=0.0
+endTime=0.0
 '''开始某一关游戏'''
 def startLevelGame(level, screen, font):
-
+	#변수 불러오기
+	global LIFE
+	global SCORE
+	global pack_x
+	global pack_y
+	global startTime
+	global endTime
+	#좌표 표시
 	change_x = 0
 	change_y = 0
-	global MODE
+
+	#시간표시
 	clock = pygame.time.Clock()
-	global SCORE
-	global LIFE
+	fever=Fever.Fever()
+
+	#그룹지정
 	wall_sprites = level.setupWalls(SKYBLUE)
 	gate_sprites = level.setupGate(WHITE)
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
 	food_sprites = level.setupFood(YELLOW, WHITE)
+
+	#초기화
 	is_clearance = False
-	Fever = False   # 피버 off
-	obj_x = 287
-	obj_y = 439
+
+	#feverTime
+	isFeverTime = False
 
 	while True:
-		if SCORE % 1000 == 0:
-			fever=True #1000점 달성 피버
+		#if SCORE % 1000 == 0:
+			#isFeverTime=True #1000점 달성 피버'''
+		#키보드 입력(게임 진행)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
@@ -62,50 +92,73 @@ def startLevelGame(level, screen, font):
 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
-					print("왼쪽 키")
 					for hero in hero_sprites:
-						change_x=-0.5
-						change_y=0
-						hero.changeSpeed([-0.5, 0])
+						hero.changeSpeed(MOVE_LEFT)
 						hero.is_move = True
-						print(change_x,change_y)
 
 				elif event.key == pygame.K_RIGHT:
-					print("오른쪽 키 ")
 					for hero in hero_sprites:
-						hero.changeSpeed([0.5, 0])
+						hero.changeSpeed(MOVE_RIGHT)
 						hero.is_move = True
-						change_x=0.5
-						change_y=0
-						print(change_x,change_y)
 
 				elif event.key == pygame.K_UP:
-					print("위쪽 키")
 					for hero in hero_sprites:
-						hero.changeSpeed([0, -0.5])
+						hero.changeSpeed(MOVE_UP)
 						hero.is_move = True
-						change_x=0
-						change_y=-0.5
-						print(change_x,change_y)
 
 				elif event.key == pygame.K_DOWN:
-					print("아래쪽 키")
 					for hero in hero_sprites:
-						hero.changeSpeed([0, 0.5])
+						hero.changeSpeed(MOVE_DOWN)
 						hero.is_move = True
-						change_x=0
-						change_y=0.5
-						print(change_x,change_y)
 
 			if event.type == pygame.KEYUP:
 				if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
 					hero.is_move = True
 					print("키업 상태")
 
-		obj_x += change_x
-		obj_y += change_y
-		print(obj_x,obj_y)
+		pack_x += change_x
+		pack_y += change_y
+		print(pack_x,pack_y)
+		#피버&모드
+		if len(food_sprites) == 0:
+			is_clearance = True
+			break
 
+		if SCORE%1000==0 and isFeverTime == True:#and isFeverTime == False
+			fever.feverTime(hero_sprites,ghost_sprites)
+			print("피버on")
+		if isFeverTime == True:
+			if startTime == 0.0:
+				startTime = time.time()
+			elif startTime != 0.0:
+				endTime = time.time()
+				if endTime - startTime > 10: # 10초
+					isFeverTime = False
+					print("피버off")
+				elif endTime - startTime <=3:
+					isFEverTime = True
+
+
+
+		#if SCORE>=500 and SCORE<=800:
+			#if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, True):
+				#is_clearance = True
+
+		if pygame.sprite.groupcollide(hero_sprites, ghost_sprites,False, False):
+			if LIFE<=1:
+				SCORE = SCORE_INIT
+				LIFE=LIFE_INIT
+				is_clearance = False
+				break
+			else:
+				LIFE -=  1
+				SCORE = SCORE
+				#is_clearance = False
+				is_clearance=False
+				print('남은 목숨은?!?!?!?! ',LIFE)
+				break
+
+		#스크린 그리기
 		screen.fill(BLACK)
 		for hero in hero_sprites:
 			hero.update(wall_sprites, gate_sprites)
@@ -113,7 +166,7 @@ def startLevelGame(level, screen, font):
 		hero_sprites.draw(screen)
 		for hero in hero_sprites:
 			food_eaten = pygame.sprite.spritecollide(hero, food_sprites, True)
-		SCORE += 10*len(food_eaten)
+		SCORE += SCORE_MUL*5*len(food_eaten)
 		wall_sprites.draw(screen)
 		gate_sprites.draw(screen)
 		food_sprites.draw(screen)
@@ -144,28 +197,10 @@ def startLevelGame(level, screen, font):
 				ghost.changeSpeed(ghost.tracks[loc0][0: 2])
 			ghost.update(wall_sprites, None)
 		ghost_sprites.draw(screen)
-		score_text = font.render("Score: %s    %s Mode    LIFE : %s" % (SCORE,MODE,LIFE), True, RED)
-		screen.blit(score_text, [10, 10])
-		if len(food_sprites) == 0:
-			if MODE < 2:
-				MODE += 1
-			elif MODE >= 2:
-				MODE = 1
-				SCORE=0
-			is_clearance = True
-			break
-		if SCORE>=500 and SCORE<=800:
-			if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, True):
-				is_clearance = True
-		if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, False):
-			LIFE -= 1
-			is_clearance = False
-			print("남은 목숨은 ?!?!?!?!?!" , LIFE)
-			if LIFE<=0:
-				SCORE = INIT
-				MODE = 1
-				LIFE=3
-			break
+
+		#상단바 그리기
+		score_text = font.render("Score: %s    %s Mode    LIFE : %s" % (SCORE,Levels.MODE,LIFE), True, RED)
+		screen.blit(score_text, INFO)
 
 		pygame.display.flip()
 		clock.tick(10)
@@ -178,7 +213,15 @@ def startLevelGame(level, screen, font):
 '''显示文字'''
 def showText(screen, font, is_clearance, flag=False):
 	clock = pygame.time.Clock()
-	msg = 'Game Over!' if not is_clearance else 'Congratulations, you won!'
+	if not is_clearance:
+		if LIFE<LIFE_INIT:
+			print(LIFE)
+			msg = 'LIFE-1'
+		elif LIFE==LIFE_INIT:
+			msg='Game Over'
+	else:
+		msg = 'Congratulations, you won!'
+
 	positions = [[235, 233], [65, 303], [170, 333]] if not is_clearance else [[145, 233], [65, 303], [170, 333]]
 	surface = pygame.Surface((400, 200))
 	surface.set_alpha(10)
@@ -217,7 +260,7 @@ def initialize():
 	pygame.display.set_icon(icon_image)
 	screen = pygame.display.set_mode([606, 606])
 	pygame.display.set_caption('OSSP Ssanhocho pacman')
-	level = Levels.Level2()
+	level = Levels.Level1()
 	return screen
 
 
@@ -231,18 +274,18 @@ def main(screen):
 	font_big = pygame.font.Font(FONTPATH, 24)
 	#for num_level in range(1, Levels.NUMLEVELS+1):
 
-	if MODE == 1:
+	if Levels.MODE == 'EASY':
 		level = Levels.Level1()
 		is_clearance = startLevelGame(level, screen, font_small)
-		if MODE == Levels.NUMLEVELS:
+		if Levels.MODE == 'HARD':
 			showText(screen, font_big, is_clearance, True)
 		else:
 			showText(screen, font_big, is_clearance)
 
-	if MODE == 2:
+	if Levels.MODE == 'HARD':
 		level = Levels.Level2()
 		is_clearance = startLevelGame(level, screen, font_small)
-		if MODE == Levels.NUMLEVELS:
+		if Levels.MODE == 'HARD':
 			showText(screen, font_big, is_clearance, True)
 		else:
 			showText(screen, font_big, is_clearance)
