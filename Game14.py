@@ -11,7 +11,7 @@ import sys
 import pygame
 import Levels
 
-
+pygame.init()
 
 '''定义一些必要的参数(몇가지 주요배개변수 )'''
 BLACK = (0, 0, 0)
@@ -33,77 +33,38 @@ PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
 HEIGHT=606
 WIDTH=606
 img =pygame.image.load('resources/images/pacman.png')
-RUNNING, PAUSE = 0, 1
-state = RUNNING
-pause_text = "일시정지"
+
 start_image=pygame.image.load('resources/images/starticon.png')
+start_image_size=start_image.get_rect().size
+start_image_width=start_image_size[0]
+start_image_height=start_image_size[1]
+start_x_po=(WIDTH/2)-(start_image_width/2)
+start_y_po=(HEIGHT/1.5)-(start_image_height/2)
 
+yongFont = pygame.font.Font( None,50)
 
-#11/11
-'''INTRO = [["게임 시작", 0],
-         ["제어", 0],
-         ["게임에대해", 0],
-         ["순위표", 0],
-         ["exit", 0]]'''
-'''
-class StartScreen:
-    #시작 인터페이스 표시를 담당하는 클래스
-    def __init__(self):
-        global all_sprites, INTRO
-        # 고스트 이동속도
-        #self.v = 6
-        #화면에 게임 이름 이미지 및 위치로드
-        image = load_image('start_screen.png')
-        sprite = pygame.sprite.Sprite()
-        sprite.image = image
-        sprite.rect = sprite.image.get_rect()
-        sprite.rect.x = WIDTH // 2 - image.get_width() // 2
-        sprite.rect.y = 0
-        all_sprites.add(sprite)
+easytitle=yongFont.render("EASY",True,WHITE)
+easy_size=easytitle.get_rect().size
+easy_size_width=easy_size[0]
+easy_size_height=easy_size[1]
+easy_x_po=(WIDTH/3)-(easy_size_width/2)
+easy_y_po=(HEIGHT/3)-(easy_size_height/2)
 
-    def print_text(self):
-        #시작 창의 텍스트 표
-        for i in range(len(INTRO)):
-            if INTRO[i][1] == 0:
-                color = pygame.Color("white")
-            else:
-                color = pygame.Color("yellow")
-            font = pygame.font.Font(FULLNAME, 50)
-            text = font.render(INTRO[i][0], 1, (color))
-            start_x = WIDTH // 2 - text.get_width() // 2
-            start_y = HEIGHT // 2 - text.get_height() // 2 - 50
-            text_x = start_x
-            text_y = start_y + i * 60
-            screen.blit(text, (text_x, text_y))'''
+hardtitle=yongFont.render("HARD",True,WHITE)
+hard_size=hardtitle.get_rect().size
+hard_size_width=hard_size[0]
+hard_size_height=hard_size[1]
+hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
+hard_y_po=(HEIGHT/3)-(hard_size_height/2)
 
 
 '''开始某一关游戏(특정레벨시 )'''
 def start_scr(screen):
-	yongFont = pygame.font.Font( None,50)
-	yongtitle=yongFont.render("PRESS E KEY => EASYMODE START",True,WHITE)
-	yongtitle2=yongFont.render("PRESS S KEY => start",True,WHITE)
-	yongtitle3=yongFont.render("PRESS H KEY => HARDMODE START",True,WHITE)
-			#Rect생성
-	yongRect=yongtitle.get_rect()
-	yongRect2=yongtitle2.get_rect()
-	yongRect3=yongtitle3.get_rect()
-	#yongRect.centerx=round(WIDTH/2)
-	yongRect.centerx=round(WIDTH/2)
-	yongRect.centery=round(HEIGHT/3)
-
-	yongRect2.centerx=round(WIDTH/2)
-	yongRect2.centery=round(HEIGHT/1.5)
-
-	yongRect3.centerx=round(WIDTH/2)
-	yongRect3.centery=round(HEIGHT/6)
-
+	screen.blit(easytitle,(easy_x_po,easy_y_po))
+	screen.blit(hardtitle,(hard_x_po,hard_y_po))
+	screen.blit(start_image,(start_x_po,start_y_po))
 	pygame.display.flip()
 	screen.fill(BLACK)
-	screen.blit(yongtitle,yongRect)
-	screen.blit(yongtitle2,yongRect2)
-	screen.blit(yongtitle3,yongRect3)
-
-	screen.blit(start_image,(WIDTH/2,HEIGHT/2))
 
 
 def pause_scr(screen):
@@ -164,20 +125,51 @@ def startLevelGame(level, screen, font):
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
+	is_true=False
+	easytitle=yongFont.render("EASY",True,WHITE)
+	clicked_easytitle=yongFont.render("EASY",True,PURPLE)
+	easy_size=easytitle.get_rect().size
+	easy_size_width=easy_size[0]
+	easy_size_height=easy_size[1]
+	easy_x_po=(WIDTH/3)-(easy_size_width/2)
+	easy_y_po=(HEIGHT/3)-(easy_size_height/2)
+
+	hardtitle=yongFont.render("HARD",True,WHITE)
+	hard_size=hardtitle.get_rect().size
+	hard_size_width=hard_size[0]
+	hard_size_height=hard_size[1]
+	hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
+	hard_y_po=(HEIGHT/3)-(hard_size_height/2)
 	while True:
-		start_scr(screen)
+		screen.blit(easytitle,(easy_x_po,easy_y_po))
+		screen.blit(hardtitle,(hard_x_po,hard_y_po))
+		screen.blit(start_image,(start_x_po,start_y_po))
+		pygame.display.flip()
+		screen.fill(BLACK)
+
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
 				pygame.quit()
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_h:
-					level.NUMLEVELS=2
-					main1(initialize())
-				if event.key == pygame.K_e:
+			if event.type == pygame.MOUSEMOTION:
+				if pygame.mouse.get_pos()[0] >= easy_x_po and pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and pygame.mouse.get_pos()[1] >= easy_y_po and pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
+					easytitle=yongFont.render("EASY",True,RED)
+				elif pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
+					hardtitle=yongFont.render("HARD",True,RED)
+				else:
+					easytitle=yongFont.render("EASY",True,WHITE)
+					hardtitle=yongFont.render("HARD",True,WHITE)
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				if pygame.mouse.get_pos()[0] >= easy_x_po and pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and pygame.mouse.get_pos()[1] >= easy_y_po and pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
 					level.NUMLEVELS=1
+					screen.fill(BLACK)
+					screen.blit(clicked_easytitle,(easy_x_po,easy_y_po))
 					main(initialize())
-				if event.key == pygame.K_s:
+				if pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
+					level.NUMLEVELS=2
+					hardtitle=yongFont.render("HARD",True,RED)
+					main1(initialize())
+				if pygame.mouse.get_pos()[0] >= start_x_po and pygame.mouse.get_pos()[0] <= start_x_po+start_image_width and pygame.mouse.get_pos()[1] >= start_y_po and pygame.mouse.get_pos()[1] <= start_y_po+start_image_height:
 					ff=True
 					while ff:
 						for event in pygame.event.get():
