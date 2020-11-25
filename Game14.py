@@ -34,6 +34,8 @@ BlinkyPATH = os.path.join(os.getcwd(), 'resources/images/Blinky.png')
 ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
+HyokyPATH = os.path.join(os.getcwd(),'resources/images/Hyoky.png')
+
 #좌표 설정
 pack_x = 287
 pack_y = 439
@@ -52,6 +54,7 @@ LIFE=3
 SCORE=0
 startTime=0.0
 endTime=0.0
+
 '''开始某一关游戏'''
 def startLevelGame(level, screen, font):
 	#변수 불러오기
@@ -61,6 +64,7 @@ def startLevelGame(level, screen, font):
 	global pack_y
 	global startTime
 	global endTime
+
 	#좌표 표시
 	change_x = 0
 	change_y = 0
@@ -68,11 +72,19 @@ def startLevelGame(level, screen, font):
 	#시간표시
 	clock = pygame.time.Clock()
 	fever=Fever.Fever()
+	startTime = 0.0
+	endTime= 0.0
+	total_time = 4
+	start_ticks = pygame.time.get_ticks()
+
+
+
 
 	#그룹지정
 	wall_sprites = level.setupWalls(SKYBLUE)
 	gate_sprites = level.setupGate(WHITE)
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
+	fever_ghost_sprites = level.setupFever(HyokyPATH)
 	food_sprites = level.setupFood(YELLOW, WHITE)
 
 	#초기화
@@ -81,6 +93,7 @@ def startLevelGame(level, screen, font):
 	#feverTime
 	isFeverTime = False
 
+	#게임 진행
 	while True:
 		#if SCORE % 1000 == 0:
 			#isFeverTime=True #1000점 달성 피버'''
@@ -116,24 +129,43 @@ def startLevelGame(level, screen, font):
 					hero.is_move = True
 					print("키업 상태")
 
-		pack_x += change_x
-		pack_y += change_y
-		print(pack_x,pack_y)
+		#pack_x += change_x
+		#pack_y += change_y
+		#print(pack_x,pack_y)
 		#피버&모드
+
+		#게임 승리(아이템 소진)
 		if len(food_sprites) == 0:
 			is_clearance = True
+			SCORE=SCORE_INIT
+			LIFE=LIFE_INIT
 			break
 
-		if SCORE%1000==0 and isFeverTime == True:#and isFeverTime == False
-			fever.feverTime(hero_sprites,ghost_sprites)
-			print("피버on")
-		if isFeverTime == True:
-			if startTime == 0.0:
-				startTime = time.time()
-			elif startTime != 0.0:
-				endTime = time.time()
-				if endTime - startTime > 10: # 10초
-					isFeverTime = False
+        #피버타임
+		if SCORE%1000==0 and SCORE>0 and isFeverTime == False:#1000점 단위
+			isFeverTime = True#1000점의 배수일 때 마다 fever모드 on
+			print("피버 on")
+			start_ticks = pygame.time.get_ticks()
+			#fever_ghost_sprites.draw(screen)
+			#ghost_move(fever_ghost_sprites,wall_sprites,screen)
+			#fever.feverTime(hero_sprites,ghost_sprites,SCORE,startTime,endTime,isFeverTime)
+
+		if isFeverTime == True: #fever모드가 on 일 때
+			fever.feverTime(hero_sprites,ghost_sprites)#fever타임 실행
+			#fever_text = font.render("**FEVER**", True, RED)
+			#screen.blit(fever_text, [50,50])
+			#pygame.display.flip()
+			#clock.tick(10)
+
+			if startTime == 0.0:#starttime이 0 이라면
+				startTime = time.time()#시간재기
+			elif startTime != 0.0:#starttime이 0이 아니라면
+				endTime = time.time()#endtime재기
+				if endTime - startTime > 3: # 10초
+					isFeverTime = False#10초끝나면 fever off
+					#ghost_sprites.draw(screen)
+					startTime = TIME_INIT
+					endTime = TIME_INIT
 					print("피버off")
 				elif endTime - startTime <=3:
 					isFEverTime = True
@@ -171,7 +203,20 @@ def startLevelGame(level, screen, font):
 		gate_sprites.draw(screen)
 		food_sprites.draw(screen)
 
-		for ghost in ghost_sprites:
+		if isFeverTime==True:
+			#start_ticks = pygame.time.get_ticks()
+			elapsed_time = (pygame.time.get_ticks()-start_ticks) / 1000
+
+    		# 피버 타이머
+			timer = font.render("timer: " + str(int(total_time - elapsed_time)), True, (255,255,255))
+	    	#피버 경과 시간 표시
+			screen.blit(timer,[500,10])
+			if total_time-elapsed_time <=0:
+				print("타임아웃")
+				is_clearance = False
+
+
+		'''for ghost in ghost_sprites:
 
 			if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
 				ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
@@ -196,7 +241,14 @@ def startLevelGame(level, screen, font):
 					loc0 = 0
 				ghost.changeSpeed(ghost.tracks[loc0][0: 2])
 			ghost.update(wall_sprites, None)
-		ghost_sprites.draw(screen)
+		ghost_sprites.draw(screen)'''
+		ghost_move(ghost_sprites,wall_sprites,screen)
+		#ghost_move(fever_ghost_sprites,wall_sprites,screen)
+
+		#피버타임 그리기
+		if isFeverTime == True:
+			fever_text = font.render("**FEVER**", True, PURPLE)
+			screen.blit(fever_text, [246,140])
 
 		#상단바 그리기
 		score_text = font.render("Score: %s    %s Mode    LIFE : %s" % (SCORE,Levels.MODE,LIFE), True, RED)
@@ -207,8 +259,33 @@ def startLevelGame(level, screen, font):
 
 	return is_clearance
 
-
-
+#유령 움직임
+def ghost_move(ghost_sprites,wall_sprites,screen):
+	for ghost in ghost_sprites:
+		if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
+			ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
+			ghost.tracks_loc[1] += 1
+		else:
+			if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
+				ghost.tracks_loc[0] += 1
+			elif ghost.role_name == 'Clyde':
+				ghost.tracks_loc[0] = 2
+			else:
+				ghost.tracks_loc[0] = 0
+			ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
+			ghost.tracks_loc[1] = 0
+		if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
+			ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
+		else:
+			if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
+				loc0 = ghost.tracks_loc[0] + 1
+			elif ghost.role_name == 'Clyde':
+				loc0 = 2
+			else:
+				loc0 = 0
+			ghost.changeSpeed(ghost.tracks[loc0][0: 2])
+		ghost.update(wall_sprites, None)
+	ghost_sprites.draw(screen)
 
 '''显示文字'''
 def showText(screen, font, is_clearance, flag=False):
@@ -217,19 +294,34 @@ def showText(screen, font, is_clearance, flag=False):
 		if LIFE<LIFE_INIT:
 			print(LIFE)
 			msg = 'LIFE-1'
+			positions = [[260, 233], [160, 303]] if not is_clearance else [[145, 233], [65, 303]]
+			texts=[font.render(msg, True, WHITE),
+				   font.render('Press ENTER to continue', True, WHITE)]
 		elif LIFE==LIFE_INIT:
 			msg='Game Over'
-	else:
+			positions = [[235, 233], [65, 303], [170, 333]] if not is_clearance else [[145, 233], [65, 303], [170, 333]]
+			texts = [font.render(msg, True, WHITE),
+				     font.render('Press ENTER to continue or play again.', True, WHITE),
+			     	 font.render('Press ESCAPE to quit.', True, WHITE)]
+	elif is_clearance:
 		msg = 'Congratulations, you won!'
+		positions = [[235, 233], [65, 303], [170, 333]] if not is_clearance else [[145, 233], [65, 303], [170, 333]]
+		texts = [font.render(msg, True, WHITE),
+			     font.render('Press ENTER to continue or play again.', True, WHITE),
+		     	 font.render('Press ESCAPE to quit.', True, WHITE)]
 
-	positions = [[235, 233], [65, 303], [170, 333]] if not is_clearance else [[145, 233], [65, 303], [170, 333]]
+	#positions = [[235, 233], [65, 303], [170, 333]] if not is_clearance else [[145, 233], [65, 303], [170, 333]]
 	surface = pygame.Surface((400, 200))
 	surface.set_alpha(10)
 	surface.fill((128, 128, 128))
 	screen.blit(surface, (100, 200))
-	texts = [font.render(msg, True, WHITE),
-			 font.render('Press ENTER to continue or play again.', True, WHITE),
-			 font.render('Press ESCAPE to quit.', True, WHITE)]
+	#if msg == 'LIFE-1':
+		#texts=[font.render(msg, True, WHITE),
+			  # font.render('Press ENTER to continue', True, WHITE)]
+	#else:
+		#texts = [font.render(msg, True, WHITE),
+			    # font.render('Press ENTER to continue or play again.', True, WHITE),
+		     	# font.render('Press ESCAPE to quit.', True, WHITE)]
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -239,18 +331,19 @@ def showText(screen, font, is_clearance, flag=False):
 				if event.key == pygame.K_RETURN:
 					if is_clearance:
 						if not flag:
-							return
+							main(initialize())
 						else:
 							main(initialize())
 					else:
 						main(initialize())
+
 				elif event.key == pygame.K_ESCAPE:
 					sys.exit()
 					pygame.quit()
 		for idx, (text, position) in enumerate(zip(texts, positions)):
 			screen.blit(text, position)
 		pygame.display.flip()
-		clock.tick(10)
+		clock.tick(60)
 
 
 '''初始化'''
