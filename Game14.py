@@ -33,29 +33,22 @@ PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
 HEIGHT=606
 WIDTH=606
 img =pygame.image.load('resources/images/pacman.png')
+bg = pygame.image.load("resources/images/pm_bg20.png")
+background=pygame.transform.scale(bg,(WIDTH,HEIGHT))
+background.set_alpha(200)
 
-start_image=pygame.image.load('resources/images/starticon.png')
+
+start_image_ex=pygame.image.load('resources/images/start_button2.png')
+start_image=pygame.transform.scale(start_image_ex,((int)(WIDTH/5),(int)(HEIGHT/10)))
 start_image_size=start_image.get_rect().size
 start_image_width=start_image_size[0]
 start_image_height=start_image_size[1]
 start_x_po=(WIDTH/2)-(start_image_width/2)
 start_y_po=(HEIGHT/1.5)-(start_image_height/2)
 
-yongFont = pygame.font.Font( None,50)
+yongFont = pygame.font.Font( 'resources/font/ALGER.TTF',50)
 
-easytitle=yongFont.render("EASY",True,WHITE)
-easy_size=easytitle.get_rect().size
-easy_size_width=easy_size[0]
-easy_size_height=easy_size[1]
-easy_x_po=(WIDTH/3)-(easy_size_width/2)
-easy_y_po=(HEIGHT/3)-(easy_size_height/2)
 
-hardtitle=yongFont.render("HARD",True,WHITE)
-hard_size=hardtitle.get_rect().size
-hard_size_width=hard_size[0]
-hard_size_height=hard_size[1]
-hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
-hard_y_po=(HEIGHT/3)-(hard_size_height/2)
 
 
 '''开始某一关游戏(특정레벨시 )'''
@@ -63,6 +56,7 @@ def start_scr(screen):
 	screen.blit(easytitle,(easy_x_po,easy_y_po))
 	screen.blit(hardtitle,(hard_x_po,hard_y_po))
 	screen.blit(start_image,(start_x_po,start_y_po))
+	screen.blit(background, (0, 0))
 	pygame.display.flip()
 	screen.fill(BLACK)
 
@@ -141,6 +135,7 @@ def startLevelGame(level, screen, font):
 	hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
 	hard_y_po=(HEIGHT/3)-(hard_size_height/2)
 	while True:
+		screen.blit(background,(0, 0))
 		screen.blit(easytitle,(easy_x_po,easy_y_po))
 		screen.blit(hardtitle,(hard_x_po,hard_y_po))
 		screen.blit(start_image,(start_x_po,start_y_po))
