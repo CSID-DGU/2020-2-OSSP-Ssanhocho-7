@@ -36,6 +36,8 @@ img =pygame.image.load('resources/images/pacman.png')
 bg = pygame.image.load("resources/images/pm_bg20.png")
 background=pygame.transform.scale(bg,(WIDTH,HEIGHT))
 background.set_alpha(200)
+set_easy_color='WHITE'
+set_hard_color='WHITE'
 
 
 start_image_ex=pygame.image.load('resources/images/start_button2.png')
@@ -48,17 +50,44 @@ start_y_po=(HEIGHT/1.5)-(start_image_height/2)
 
 yongFont = pygame.font.Font( 'resources/font/ALGER.TTF',50)
 
+'''easytitle=yongFont.render("EASY",True,WHITE)
+clicked_easytitle=yongFont.render("EASY",True,PURPLE)
+easy_size=easytitle.get_rect().size
+easy_size_width=easy_size[0]
+easy_size_height=easy_size[1]
+easy_x_po=(WIDTH/3)-(easy_size_width/2)
+easy_y_po=(HEIGHT/3)-(easy_size_height/2)
 
-
+hardtitle=yongFont.render("HARD",True,WHITE)
+hard_size=hardtitle.get_rect().size
+hard_size_width=hard_size[0]
+hard_size_height=hard_size[1]
+hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
+hard_y_po=(HEIGHT/3)-(hard_size_height/2)
+set_color='WHITE'''
 
 '''开始某一关游戏(특정레벨시 )'''
-def start_scr(screen):
+def start_scr(screen,color):
+	easytitle=yongFont.render("EASY",True,color)
+	easy_size=easytitle.get_rect().size
+	easy_size_width=easy_size[0]
+	easy_size_height=easy_size[1]
+	easy_x_po=(WIDTH/3)-(easy_size_width/2)
+	easy_y_po=(HEIGHT/3)-(easy_size_height/2)
+
+	hardtitle=yongFont.render("HARD",True,WHITE)
+	hard_size=hardtitle.get_rect().size
+	hard_size_width=hard_size[0]
+	hard_size_height=hard_size[1]
+	hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
+	hard_y_po=(HEIGHT/3)-(hard_size_height/2)
+
+	'''screen.blit(background, (0, 0))
 	screen.blit(easytitle,(easy_x_po,easy_y_po))
 	screen.blit(hardtitle,(hard_x_po,hard_y_po))
 	screen.blit(start_image,(start_x_po,start_y_po))
-	screen.blit(background, (0, 0))
 	pygame.display.flip()
-	screen.fill(BLACK)
+	screen.fill(BLACK)'''
 
 
 def pause_scr(screen):
@@ -79,6 +108,8 @@ def pause_scr(screen):
 	screen.blit(yongtitle6,yongRect6)
 
 def restart_screen(screen):
+	global set_easy_color
+	global set_hard_color
 	runn=True
 	while runn:
 		pause_scr(screen)
@@ -109,7 +140,11 @@ def restart_screen(screen):
 						sys.exit()
 						pygame.quit()
 				elif event.key == pygame.K_r:
+						set_easy_color='WHITE'
+						set_hard_color='WHITE'
 						main(initialize())
+
+
 
 def startLevelGame(level, screen, font):
 	clock = pygame.time.Clock()
@@ -120,27 +155,38 @@ def startLevelGame(level, screen, font):
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
 	is_true=False
+	global set_easy_color
+	global set_hard_color
+
 	easytitle=yongFont.render("EASY",True,WHITE)
-	clicked_easytitle=yongFont.render("EASY",True,PURPLE)
+	clicked_easytitle=yongFont.render("EASY",True,RED)
 	easy_size=easytitle.get_rect().size
 	easy_size_width=easy_size[0]
 	easy_size_height=easy_size[1]
 	easy_x_po=(WIDTH/3)-(easy_size_width/2)
 	easy_y_po=(HEIGHT/3)-(easy_size_height/2)
-
 	hardtitle=yongFont.render("HARD",True,WHITE)
+	clicked_hardtitle=yongFont.render("HARD",True,RED)
 	hard_size=hardtitle.get_rect().size
 	hard_size_width=hard_size[0]
 	hard_size_height=hard_size[1]
 	hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
 	hard_y_po=(HEIGHT/3)-(hard_size_height/2)
+	#start_scr(screen,WHITE)
 	while True:
 		screen.blit(background,(0, 0))
-		screen.blit(easytitle,(easy_x_po,easy_y_po))
-		screen.blit(hardtitle,(hard_x_po,hard_y_po))
+		if set_easy_color =='WHITE':
+			screen.blit(easytitle,(easy_x_po,easy_y_po))
+		elif  set_easy_color=='RED':
+			screen.blit(clicked_easytitle,(easy_x_po,easy_y_po))
+		if set_hard_color =='WHITE':
+			screen.blit(hardtitle,(hard_x_po,hard_y_po))
+		elif set_hard_color =='RED':
+			screen.blit(clicked_hardtitle,(hard_x_po,hard_y_po))
 		screen.blit(start_image,(start_x_po,start_y_po))
 		pygame.display.flip()
 		screen.fill(BLACK)
+
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -149,6 +195,7 @@ def startLevelGame(level, screen, font):
 			if event.type == pygame.MOUSEMOTION:
 				if pygame.mouse.get_pos()[0] >= easy_x_po and pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and pygame.mouse.get_pos()[1] >= easy_y_po and pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
 					easytitle=yongFont.render("EASY",True,RED)
+
 				elif pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
 					hardtitle=yongFont.render("HARD",True,RED)
 				else:
@@ -156,13 +203,12 @@ def startLevelGame(level, screen, font):
 					hardtitle=yongFont.render("HARD",True,WHITE)
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if pygame.mouse.get_pos()[0] >= easy_x_po and pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and pygame.mouse.get_pos()[1] >= easy_y_po and pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
-					level.NUMLEVELS=1
-					screen.fill(BLACK)
-					screen.blit(clicked_easytitle,(easy_x_po,easy_y_po))
+					set_easy_color='RED'
+					set_hard_color='WHITE'
 					main(initialize())
 				if pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
-					level.NUMLEVELS=2
-					hardtitle=yongFont.render("HARD",True,RED)
+					set_easy_color='WHITE'
+					set_hard_color='RED'
 					main1(initialize())
 				if pygame.mouse.get_pos()[0] >= start_x_po and pygame.mouse.get_pos()[0] <= start_x_po+start_image_width and pygame.mouse.get_pos()[1] >= start_y_po and pygame.mouse.get_pos()[1] <= start_y_po+start_image_height:
 					ff=True
