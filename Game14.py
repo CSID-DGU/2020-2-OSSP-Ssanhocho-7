@@ -33,13 +33,13 @@ PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
 HEIGHT=606
 WIDTH=606
 img =pygame.image.load('resources/images/pacman.png')
+
+
 bg = pygame.image.load("resources/images/pm_bg20.png")
 background=pygame.transform.scale(bg,(WIDTH,HEIGHT))
 background.set_alpha(200)
 set_easy_color='WHITE'
 set_hard_color='WHITE'
-
-
 start_image_ex=pygame.image.load('resources/images/start_button2.png')
 start_image=pygame.transform.scale(start_image_ex,((int)(WIDTH/5),(int)(HEIGHT/10)))
 start_image_size=start_image.get_rect().size
@@ -47,53 +47,15 @@ start_image_width=start_image_size[0]
 start_image_height=start_image_size[1]
 start_x_po=(WIDTH/2)-(start_image_width/2)
 start_y_po=(HEIGHT/1.5)-(start_image_height/2)
-
+#screen = pygame.display.set_mode([WIDTH, HEIGHT],pygame.RESIZABLE)
+#fake_screen=screen.copy()
 yongFont = pygame.font.Font( 'resources/font/ALGER.TTF',50)
 
-'''easytitle=yongFont.render("EASY",True,WHITE)
-clicked_easytitle=yongFont.render("EASY",True,PURPLE)
-easy_size=easytitle.get_rect().size
-easy_size_width=easy_size[0]
-easy_size_height=easy_size[1]
-easy_x_po=(WIDTH/3)-(easy_size_width/2)
-easy_y_po=(HEIGHT/3)-(easy_size_height/2)
-
-hardtitle=yongFont.render("HARD",True,WHITE)
-hard_size=hardtitle.get_rect().size
-hard_size_width=hard_size[0]
-hard_size_height=hard_size[1]
-hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
-hard_y_po=(HEIGHT/3)-(hard_size_height/2)
-set_color='WHITE'''
-
 '''开始某一关游戏(특정레벨시 )'''
-def start_scr(screen,color):
-	easytitle=yongFont.render("EASY",True,color)
-	easy_size=easytitle.get_rect().size
-	easy_size_width=easy_size[0]
-	easy_size_height=easy_size[1]
-	easy_x_po=(WIDTH/3)-(easy_size_width/2)
-	easy_y_po=(HEIGHT/3)-(easy_size_height/2)
-
-	hardtitle=yongFont.render("HARD",True,WHITE)
-	hard_size=hardtitle.get_rect().size
-	hard_size_width=hard_size[0]
-	hard_size_height=hard_size[1]
-	hard_x_po=(WIDTH/1.5)-(hard_size_width/2)
-	hard_y_po=(HEIGHT/3)-(hard_size_height/2)
-
-	'''screen.blit(background, (0, 0))
-	screen.blit(easytitle,(easy_x_po,easy_y_po))
-	screen.blit(hardtitle,(hard_x_po,hard_y_po))
-	screen.blit(start_image,(start_x_po,start_y_po))
-	pygame.display.flip()
-	screen.fill(BLACK)'''
-
-
 def pause_scr(screen):
 	yongFont = pygame.font.Font( None,50)
-	yongtitle5=yongFont.render("PRESS ESC KEY => START",True,WHITE)
-	yongtitle6=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
+	yongtitle5=yongFont.render("<PRESS ESC KEY TO START>",True,WHITE)
+	yongtitle6=yongFont.render("<PRESS R KEY TO RESTART>",True,WHITE)
 	#Rect생성
 	yongRect5=yongtitle5.get_rect()
 	yongRect6=yongtitle6.get_rect()
@@ -118,33 +80,12 @@ def restart_screen(screen):
 				sys.exit(-1)
 				pygame.quit()
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_LEFT:
-					for hero in hero_sprites:
-						hero.changeSpeed([-1, 0])
-						hero.is_move = True
-				elif event.key == pygame.K_RIGHT:
-					for hero in hero_sprites:
-						hero.changeSpeed([1, 0])
-						hero.is_move = True
-				elif event.key == pygame.K_UP:
-					for hero in hero_sprites:
-						hero.changeSpeed([0, -1])
-						hero.is_move = True
-				elif event.key == pygame.K_DOWN:
-					for hero in hero_sprites:
-						hero.changeSpeed([0, 1])
-						hero.is_move = True
-				elif event.key == pygame.K_ESCAPE:
+				if event.key == pygame.K_ESCAPE:
 						runn=False
-				elif event.key == pygame.K_a:
-						sys.exit()
-						pygame.quit()
 				elif event.key == pygame.K_r:
 						set_easy_color='WHITE'
 						set_hard_color='WHITE'
 						main(initialize())
-
-
 
 def startLevelGame(level, screen, font):
 	clock = pygame.time.Clock()
@@ -155,8 +96,13 @@ def startLevelGame(level, screen, font):
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
 	is_true=False
+
 	global set_easy_color
 	global set_hard_color
+	global WIDTH
+	global HEIGHT
+	#global fake_screen
+	global background
 
 	easytitle=yongFont.render("EASY",True,WHITE)
 	clicked_easytitle=yongFont.render("EASY",True,RED)
@@ -174,7 +120,7 @@ def startLevelGame(level, screen, font):
 	hard_y_po=(HEIGHT/3)-(hard_size_height/2)
 	#start_scr(screen,WHITE)
 	while True:
-		screen.blit(background,(0, 0))
+		screen.blit(background,(0,0))
 		if set_easy_color =='WHITE':
 			screen.blit(easytitle,(easy_x_po,easy_y_po))
 		elif  set_easy_color=='RED':
@@ -186,16 +132,16 @@ def startLevelGame(level, screen, font):
 		screen.blit(start_image,(start_x_po,start_y_po))
 		pygame.display.flip()
 		screen.fill(BLACK)
-
-
 		for event in pygame.event.get():
+			if event.type == pygame.VIDEORESIZE:
+				screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
 				pygame.quit()
 			if event.type == pygame.MOUSEMOTION:
 				if pygame.mouse.get_pos()[0] >= easy_x_po and pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and pygame.mouse.get_pos()[1] >= easy_y_po and pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
 					easytitle=yongFont.render("EASY",True,RED)
-
 				elif pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
 					hardtitle=yongFont.render("HARD",True,RED)
 				else:
@@ -235,10 +181,8 @@ def startLevelGame(level, screen, font):
 										hero.changeSpeed([0, 1])
 										hero.is_move = ff
 					#일시정지 기능 만드는 중 11/11 창dy
-								elif event.key == pygame.K_a:
-										sys.exit()
-										pygame.quit()
 								elif event.key == pygame.K_ESCAPE:
+
 										#여기 제시작
 									 	restart_screen(screen)
 								elif event.type == pygame.QUIT:
@@ -261,12 +205,12 @@ def startLevelGame(level, screen, font):
 						food_sprites.draw(screen)
 						for ghost in ghost_sprites:
 							# 幽灵随机运动(效果不好且有BUG) 유령 무작위 이(나쁜효과 및버그)
-							'''
-							res = ghost.update(wall_sprites, None)
-							while not res:
-								ghost.changeSpeed(ghost.randomDirection())
-								res = ghost.update(wall_sprites, None)
-							'''
+									'''res = ghost.update(wall_sprites, None)
+									while not res:
+										ghost.changeSpeed(ghost.randomDirection())
+										res = ghost.update(wall_sprites, None)
+									'''
+
 							# 指定幽灵运动路径(유령 경로이 )
 							if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
 								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
@@ -321,6 +265,8 @@ def showText(screen, font, is_clearance, flag=False):
 	texts = [font.render(msg, True, WHITE),
 			 font.render('Press ENTER to continue or play again.', True, WHITE),
 			 font.render('Press ESCAPE to quit.', True, WHITE)]
+	global set_easy_color
+	global set_hard_color
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -332,8 +278,12 @@ def showText(screen, font, is_clearance, flag=False):
 						if not flag:
 							return
 						else:
+							set_easy_color='WHITE'
+							set_hard_color='WHITE'
 							main1(initialize())
 					else:
+						set_easy_color='WHITE'
+						set_hard_color='WHITE'
 						main1(initialize())
 				elif event.key == pygame.K_ESCAPE:
 					sys.exit()
@@ -356,7 +306,7 @@ def initialize():
 	pygame.init()
 	icon_image = pygame.image.load(ICONPATH)
 	pygame.display.set_icon(icon_image)
-	screen = pygame.display.set_mode([WIDTH, HEIGHT])
+	screen = pygame.display.set_mode([WIDTH, HEIGHT],pygame.RESIZABLE)
 	pygame.display.set_caption('Pacman-微信公众号Charles的皮卡丘')
 	return screen
 
