@@ -1,30 +1,47 @@
 import pygame
 from Sprites import *
 import random
+import Game14
 MODE='randomMode'
+wall_width=Game14.screen_size[0]/65
+map_height=Game14.screen_size[1]
+[0, 0, 6, 306]
+
+'''가로 576
+6=wall_width1
+세로306
+150은 width*0.25
+66은 height*0.12
+210은 가로/2.9
+154는 width/3.8
+60은 0.1width
+36은 width/14
+480dms width*0.83
+510dms width*0.9'''
 
 
+# 좌표개 x축이랑 거리 y축이랑 거리
 
 class Level1():
 	MODE='EASY'
 	def __init__(self):
 		self.info = 'level1'
 	'''벽 만들기'''
-	def setupWalls(self, wall_color):
+	def setupWalls(self, wall_color,width,height):
 		self.wall_sprites = pygame.sprite.Group()
-		wall_positions = [[0, 0, 6, 306], # 맨 왼쪽
-						  [0, 0, 576, 6], # 맨 위쪽
-						  [0, 300, 576, 6], # 맨 아래쪽
-						  [570, 0, 6, 306], # 맨 오른쪽
-						  [150, 0, 6, 66], # 맨 위 왼쪽 |
-						  [420, 0, 6, 66], # 맨 위 오른쪽 |
-						  [210, 60, 154, 6], # ghost zone 위 가운데 -----
-						  [60, 60, 36, 6], [60, 60, 6, 66], # 맨 위 왼쪽 ㄱ자 좌우반전한것
-						  [480, 60, 36, 6], [510, 60, 6, 66], # 맨 위 오른쪽 ㄱ자 좌우반전한것
-						  [120, 120, 36, 6], [420, 120, 36, 6], [120, 180, 36, 6], [420, 180, 36, 6], # 조그마한 - 4개
-						  [60, 240, 36, 6], [60, 180, 6, 66], # 아래 왼쪽 L자
-						  [480, 240, 36, 6], [510, 180, 6, 66], # 아래 오른쪽 L자 좌우반전한것
-						  [150, 240, 6, 66], # 맨 아래 왼쪽 |
+		wall_positions = [[0, 0, width/70, height], # 맨 왼쪽
+						  [0, 0, width, width/70], # 맨 위쪽
+						  [0, height-width/70, width, width/65], # 맨 아래쪽
+						  [width-width/70, 0, width/6, height], # 맨 오른쪽
+						  [width*0.25, 0, width/70, height*0.12], # 맨 위 왼쪽 |
+						  [width-width*0.25, 0, width/70, height*0.12], # 맨 위 오른쪽 |체크
+						  [width/2.9, height*0.12-width/70, width/3.8, width/70], # ghost zone 위 가운데 -----
+						  [width*0.1, width*0.1, width/14, width/70], [width*0.1, width*0.1, width/70, height*0.12], # 맨 위 왼쪽 ㄱ자 좌우반전한것
+						  [width*0.83, width*0.1, width/14, width/70], [width*0.9, width*0.1, width/70, height*0.12], # 맨 위 오른쪽 ㄱ자 좌우반전한것
+						  [width*0.2, width*0.2, width/14, width/70], [width/1.45, width*0.2, width/14, width/70], [width*0.2, width*0.3, width/14, width/70], [width/1.45, width*0.3, width/14, width/70], # 조그마한 - 4개
+						  [width*0.1, width*0.415, width/14, width/70], [width*0.1, width*0.3, width/70, height*0.12], # 아래 왼쪽 L자
+						  [width*0.83, width*0.415, width/14, width/70], [width*0.9, width*0.3, width/70, height*0.13], # 아래 오른쪽 L자 좌우반전한것
+						  [width*0.25, width*0.415, width/70, height*0.12], # 맨 아래 왼쪽 |
 						  [420, 240, 6, 66], # 맨 아래 오른쪽 |
 						  [210, 240, 154, 6], # ghost zone 아래 가운데 -----
 						  [210, 120, 36, 6], # ghost zone start
@@ -126,13 +143,13 @@ class Level1():
 		return self.food_sprites
 
 class Level2():
-	MODE="HARD"
+	MODE = 'HARD'
 	def __init__(self):
 		self.info = 'level2'
 	'''벽 만들기'''
 	def setupWalls(self, wall_color):
 		self.wall_sprites = pygame.sprite.Group()
-		wall_positions = [[0, 0, 6, 600], # 외벽
+		wall_positions = [[0, 0,6, 600], # 외벽
 						  [0, 0, 600, 6],
 						  [0, 600, 606, 6],
 						  [600, 0, 6, 606],
