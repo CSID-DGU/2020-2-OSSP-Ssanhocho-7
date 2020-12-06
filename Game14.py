@@ -188,17 +188,17 @@ def restart_screen(screen):
 
 
 def startLevelGame(level, screen, font):
+	global screen_size
+	global set_easy_color
+	global set_hard_color
 	clock = pygame.time.Clock()
 	SCORE = 0
-	wall_sprites = level.setupWalls(SKYBLUE)
+	wall_sprites = level.setupWalls(SKYBLUE,screen_size[0],screen_size[1])
 	gate_sprites = level.setupGate(WHITE)
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
 	food_sprites = level.setupFood(YELLOW, WHITE)
 	is_clearance = False
 	is_true=False
-	global screen_size
-	global set_easy_color
-	global set_hard_color
 
 	easytitle=yongFont.render("EASY",True,WHITE)
 	clicked_easytitle=yongFont.render("EASY",True,RED)
@@ -256,6 +256,7 @@ def startLevelGame(level, screen, font):
 					resizing=False
 					resizing_this_frame=False
 					last_resize=None
+
 					if set_easy_color == 'RED' and set_hard_color == 'WHITE':
 						main(initialize())
 					elif set_easy_color == 'WHITE' and set_hard_color =='RED' :
@@ -290,6 +291,18 @@ def startLevelGame(level, screen, font):
 							if event.type == pygame.QUIT:
 								sys.exit(-1)
 								pygame.quit()
+							if event.type == pygame.VIDEORESIZE:
+								resizing=True
+								#resizing_this_frame=True
+								last_resize=event.w, event.h
+								if resizing :
+									screen_size=last_resize
+									screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE)
+									resizing=False
+									resizing_this_frame=False
+									last_resize=None
+									wall_sprites = level.setupWalls(SKYBLUE,screen_size[0],screen_size[1])
+
 							if event.type == pygame.KEYDOWN:
 								if event.key == pygame.K_LEFT:
 									for hero in hero_sprites:
