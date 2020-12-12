@@ -30,16 +30,20 @@ BlinkyPATH = os.path.join(os.getcwd(), 'resources/images/Blinky.png')
 ClydePATH = os.path.join(os.getcwd(), 'resources/images/Clyde.png')
 InkyPATH = os.path.join(os.getcwd(), 'resources/images/Inky.png')
 PinkyPATH = os.path.join(os.getcwd(), 'resources/images/Pinky.png')
-HEIGHT=606
-WIDTH=606
-img =pygame.image.load('resources/images/pacman.png')
 
 screen_size=606,606
-
+initial_screen_size=606,606
+easy_screen=577,306
+img =pygame.image.load('resources/images/pacman.png')
 
 bg = pygame.image.load("resources/images/pm_bg20.png")
 set_easy_color='WHITE'
 set_hard_color='WHITE'
+set_rank_color='WHITE'
+moniter_size=pygame.display.Info().current_w,pygame.display.Info().current_h
+
+music_on=True
+SCORE = 0
 
 '''set_easy_color='WHITE'
 set_hard_color='WHITE'
@@ -121,7 +125,6 @@ def pause_scr(screen):
 def restart_screen(screen):
 	global set_easy_color
 	global set_hard_color
-
 	runn=True
 	resizing=False
 	global screen_size
@@ -146,19 +149,48 @@ def restart_screen(screen):
 	screen.blit(yongtitle5,(yongtitle5_x_po,yongtitle5_y_po))
 	screen.blit(yongtitle6,(yongtitle6_x_po,yongtitle6_y_po))
 	pygame.display.flip()
-
 	while runn:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit(-1)
 				pygame.quit()
 			if event.type == pygame.VIDEORESIZE:
+				'''last_resize=event.w, event.h
+				if screen_size[0]<=last_resize[0] and screen_size[1]<=last_resize[1] :
+					screen_size=last_resize
+					print(screen_size)
+					resizing=True
+				else:
+					last_resize =screen_size
+					screen_size = last_resize
+					print(screen_size)
+					resizing=True'''
+				last_resize=event.w,event.h
+				if event.w>event.h :
+					if last_resize[0]>=moniter_size[1]:
+						a=moniter_size[1]
+						event.w=a
+					print("gggg")
+					last_resize=event.w , event.w
+
+				elif(event.h>event.w):
+					if last_resize[1]>=moniter_size[1]:
+						b=moniter_size[1]
+						event.h=b
+					last_resize=event.h , event.h
+					print("hhhhh")
+
+				if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
+					last_resize=initial_screen_size
+					print("hi")
+
+					#resizing=True
+				screen_size=last_resize
 				resizing=True
-				#resizing_this_frame=True
-				last_resize=event.w, event.h
+
 				if resizing :
 					screen_size=last_resize
-					screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE)
+					screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE | pygame.NOFRAME)
 					resizing=False
 					resizing_this_frame=False
 					last_resize=None
@@ -185,18 +217,18 @@ def restart_screen(screen):
 						set_hard_color='WHITE'
 						main(initialize())
 
-
-
 def startLevelGame(level, screen, font):
 	global screen_size
 	global set_easy_color
 	global set_hard_color
+	global music_on, SCORE
+	global set_rank_color
 	clock = pygame.time.Clock()
 	SCORE = 0
-	wall_sprites = level.setupWalls(SKYBLUE,screen_size[0],screen_size[1])
+	wall_sprites = level.setupWalls(SKYBLUE, screen_size[0], screen_size[1])
 	gate_sprites = level.setupGate(WHITE)
-	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH])
-	food_sprites = level.setupFood(YELLOW, WHITE)
+	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH],screen_size[0],screen_size[1])
+	food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
 	is_clearance = False
 	is_true=False
 
@@ -215,12 +247,20 @@ def startLevelGame(level, screen, font):
 	hard_x_po=(screen_size[0]/1.5)-(hard_size_width/2)
 	hard_y_po=(screen_size[1]/3)-(hard_size_height/2)
 
+	ranktitle = yongFont.render("RANK", True, WHITE)
+	clicked_ranktitle = yongFont.render("RANK", True, YELLOW)
+	rank_size = ranktitle.get_rect().size
+	rank_size_width = hard_size[0]
+	rank_size_height = hard_size[1]
+	rank_x_po = screen_size[0]/2 - rank_size_width/2
+	rank_y_po = screen_size[1]/2
+
 	background=pygame.transform.scale(bg,screen_size)
 	background.set_alpha(200)
 
 
 	start_image_ex=pygame.image.load('resources/images/start_button2.png')
-	start_image=pygame.transform.scale(start_image_ex,((int)(screen_size[0]/5),(int)(HEIGHT/10)))
+	start_image=pygame.transform.scale(start_image_ex,((int)(screen_size[0]/5),(int)(screen_size[1]/10)))
 	start_image_size=start_image.get_rect().size
 	start_image_width=start_image_size[0]
 	start_image_height=start_image_size[1]
@@ -230,6 +270,8 @@ def startLevelGame(level, screen, font):
 	resizing=False
 	#resizing_this_frame=False
 	last_resize=None
+	fullscreen=False
+	global moniter_size
 
 	while True:
 		screen.blit(background,(0, 0))
@@ -241,18 +283,51 @@ def startLevelGame(level, screen, font):
 			screen.blit(hardtitle,(hard_x_po,hard_y_po))
 		elif set_hard_color =='RED':
 			screen.blit(clicked_hardtitle,(hard_x_po,hard_y_po))
+		if set_rank_color == 'WHITE':
+			screen.blit(ranktitle, (rank_x_po, rank_y_po))
+		elif set_rank_color == 'YELLOW':
+			screen.blit(clicked_ranktitle, (rank_x_po, rank_y_po))
+
 		screen.blit(start_image,(start_x_po,start_y_po))
 		pygame.display.flip()
 		screen.fill(BLACK)
 
 		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_m:
+					if music_on:
+						pygame.mixer.music.pause()
+						music_on=False
+					else:
+						pygame.mixer.music.unpause()
+						music_on=True
 			if event.type == pygame.VIDEORESIZE:
-				resizing=True
 				#resizing_this_frame=True
-				last_resize=event.w, event.h
+				last_resize=event.w,event.h
+				if event.w>event.h :
+					if last_resize[0]>=moniter_size[1]:
+						a=moniter_size[1]
+						event.w=a
+					print("gggg")
+					last_resize=event.w , event.w
+
+				elif(event.h>event.w):
+					if last_resize[1]>=moniter_size[1]:
+						b=moniter_size[1]
+						event.h=b
+					last_resize=event.h , event.h
+					print("hhhhh")
+
+				if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
+					last_resize=initial_screen_size
+					print("hi")
+
+					#resizing=True
+				screen_size=last_resize
+				resizing=True
+
 				if resizing :
-					screen_size=last_resize
-					screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE)
+					screen=pygame.display.set_mode(screen_size , pygame.RESIZABLE | pygame.NOFRAME)
 					resizing=False
 					resizing_this_frame=False
 					last_resize=None
@@ -271,20 +346,30 @@ def startLevelGame(level, screen, font):
 					easytitle=yongFont.render("EASY",True,RED)
 				elif pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
 					hardtitle=yongFont.render("HARD",True,RED)
+				elif rank_x_po <= pygame.mouse.get_pos()[0] <= rank_x_po+rank_size_width and rank_y_po <= pygame.mouse.get_pos()[1] <= rank_y_po+rank_size_height:
+					ranktitle = yongFont.render("RANK", True, YELLOW)
 				else:
 					easytitle=yongFont.render("EASY",True,WHITE)
 					hardtitle=yongFont.render("HARD",True,WHITE)
+					ranktitle = yongFont.render("RANK", True, WHITE)
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				if pygame.mouse.get_pos()[0] >= easy_x_po and pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and pygame.mouse.get_pos()[1] >= easy_y_po and pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
+				if easy_x_po <= pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and easy_y_po <= pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
 					set_easy_color='RED'
 					set_hard_color='WHITE'
+					set_rank_color = 'WHITE'
 					main(initialize())
-				if pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
+				if hard_x_po <= pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and hard_y_po <= pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
 					set_easy_color='WHITE'
 					set_hard_color='RED'
-					#print(set_easy_color)
+					set_rank_color = 'WHITE'
 					main1(initialize())
-				if pygame.mouse.get_pos()[0] >= start_x_po and pygame.mouse.get_pos()[0] <= start_x_po+start_image_width and pygame.mouse.get_pos()[1] >= start_y_po and pygame.mouse.get_pos()[1] <= start_y_po+start_image_height:
+				if rank_x_po <= pygame.mouse.get_pos()[0] <= rank_x_po+rank_size_width and rank_y_po <= pygame.mouse.get_pos()[1] <= rank_y_po+rank_size_height:
+					set_easy_color='WHITE'
+					set_hard_color='WHITE'
+					set_rank_color = 'YELLOW'
+
+
+				if start_x_po <= pygame.mouse.get_pos()[0] <= start_x_po+start_image_width and start_y_po <= pygame.mouse.get_pos()[1] <= start_y_po+start_image_height:
 					ff=True
 					while ff:
 						for event in pygame.event.get():
@@ -292,9 +377,30 @@ def startLevelGame(level, screen, font):
 								sys.exit(-1)
 								pygame.quit()
 							if event.type == pygame.VIDEORESIZE:
+								last_resize=event.w,event.h
+								if event.w>event.h :
+									if last_resize[0]>=moniter_size[1]:
+										a=moniter_size[1]
+										event.w=a
+									print("gggg")
+									last_resize=event.w , event.w
+
+								elif(event.h>event.w):
+									if last_resize[1]>=moniter_size[1]:
+										b=moniter_size[1]
+										event.h=b
+									last_resize=event.h , event.h
+									print("hhhhh")
+
+								if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
+									last_resize=initial_screen_size
+									print("hi")
+
+									#resizing=True
+								screen_size=last_resize
 								resizing=True
-								#resizing_this_frame=True
-								last_resize=event.w, event.h
+
+
 								if resizing :
 									screen_size=last_resize
 									screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE)
@@ -302,8 +408,18 @@ def startLevelGame(level, screen, font):
 									resizing_this_frame=False
 									last_resize=None
 									wall_sprites = level.setupWalls(SKYBLUE,screen_size[0],screen_size[1])
-
+									for hero in hero_sprites:
+										hero.base_image = pygame.transform.scale(hero.base_image, (80,80))
+										hero.image = hero.base_image.copy()
+									food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
 							if event.type == pygame.KEYDOWN:
+								if event.key == pygame.K_m:
+									if music_on:
+										pygame.mixer.music.pause()
+										music_on = False
+									else:
+										pygame.mixer.music.unpause()
+										music_on = True
 								if event.key == pygame.K_LEFT:
 									for hero in hero_sprites:
 										hero.changeSpeed([-1, 0])
@@ -340,18 +456,17 @@ def startLevelGame(level, screen, font):
 						hero_sprites.draw(screen)
 						for hero in hero_sprites:
 							food_eaten = pygame.sprite.spritecollide(hero, food_sprites, True)
-						SCORE += len(food_eaten)
+						for food in food_eaten:
+							if food.width==screen_size[0]/40:
+								SCORE+=50
+							else:
+								SCORE+=10
 						wall_sprites.draw(screen)
 						gate_sprites.draw(screen)
 						food_sprites.draw(screen)
 						for ghost in ghost_sprites:
 							# 幽灵随机运动(效果不好且有BUG) 유령 무작위 이(나쁜효과 및버그)
-							'''
-							res = ghost.update(wall_sprites, None)
-							while not res:
-								ghost.changeSpeed(ghost.randomDirection())
-								res = ghost.update(wall_sprites, None)
-							'''
+
 							# 指定幽灵运动路径(유령 경로이 )
 							if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
 								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
@@ -397,12 +512,6 @@ def startLevelGame(level, screen, font):
 			last_resize=None
 			print(screen_size)'''
 
-
-
-
-
-
-
 '''显示文字텍스트 이름?'''
 def showText(screen, font, is_clearance, flag=False):
 	clock = pygame.time.Clock()
@@ -415,7 +524,14 @@ def showText(screen, font, is_clearance, flag=False):
 	texts = [font.render(msg, True, WHITE),
 			 font.render('Press ENTER to continue or play again.', True, WHITE),
 			 font.render('Press ESCAPE to quit.', True, WHITE)]
+
+
+
 	while True:
+		for idx, (text, position) in enumerate(zip(texts, positions)):
+			screen.blit(text, position)
+		pygame.display.flip()
+		clock.tick(10)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit()
@@ -433,16 +549,15 @@ def showText(screen, font, is_clearance, flag=False):
 					sys.exit()
 					pygame.quit()
 
-				elif event.key == pygame.K_a:
-					sys.exit()
-					pygame.quit()
 
 
 
-		for idx, (text, position) in enumerate(zip(texts, positions)):
+
+
+		'''for idx, (text, position) in enumerate(zip(texts, positions)):
 			screen.blit(text, position)
 		pygame.display.flip()
-		clock.tick(10)
+		clock.tick(10)'''
 
 
 '''初始化(초기)'''
@@ -452,6 +567,7 @@ def initialize():
 	icon_image = pygame.image.load(ICONPATH)
 	pygame.display.set_icon(icon_image)
 	screen = pygame.display.set_mode(screen_size,pygame.RESIZABLE)
+
 	pygame.display.set_caption('Pacman-微信公众号Charles的皮卡丘')
 	return screen
 
