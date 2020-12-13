@@ -1,5 +1,6 @@
 # 2020-2-OSSP-Ssanhocho-7
-#
+
+---
 
 # Project Introduction
 >레트로 게임은 최근 출시되는 모바일, PC 게임과 비교하면 기술력이나 게임성이 현저히 떨어지지만,
