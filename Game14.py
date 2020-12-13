@@ -77,7 +77,12 @@ FEVER_EAT = 50
 fever_count = 1
 #3.점수
 SCORE_INIT=0
+<<<<<<< HEAD
 SCORE_MUL=30
+=======
+SCORE_SMALL=30
+SCORE_BIG=60
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 SCORE=0
 #4.목숨
 LIFE_INIT=3
@@ -284,7 +289,11 @@ def startLevelGame(level, screen, font):
 
 	#그룹지정
 	wall_sprites = level.setupWalls(SKYBLUE, screen_size[0], screen_size[1])
+<<<<<<< HEAD
 	gate_sprites = level.setupGate(WHITE)
+=======
+	gate_sprites = level.setupGate(WHITE, screen_size[0], screen_size[1])
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH],screen_size[0],screen_size[1])
 	food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
 	#total_score = len(food_sprites) * SCORE_MUL * STAGE
@@ -371,6 +380,10 @@ def startLevelGame(level, screen, font):
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_m:
+<<<<<<< HEAD
+=======
+				# 음악 일시정지
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 					if music_on:
 						pygame.mixer.music.pause()
 						music_on=False
@@ -485,10 +498,21 @@ def startLevelGame(level, screen, font):
 									resizing_this_frame=False
 									last_resize=None
 									wall_sprites = level.setupWalls(SKYBLUE,screen_size[0],screen_size[1])
+<<<<<<< HEAD
 									for hero in hero_sprites:
 										hero.base_image = pygame.transform.scale(hero.base_image, (80,80))
 										hero.image = hero.base_image.copy()
 									food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
+=======
+									gate_sprites = level.setupGate(WHITE, screen_size[0], screen_size[1])
+									food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
+									hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH],screen_size[0],screen_size[1])
+									for ghost in ghost_sprites:
+										if pygame.sprite.spritecollide(ghost, hero_sprites, True):
+											ghost.rect.left = x_prev
+											ghost.rect.top = y_prev
+									#pygame.transform.scale(self.base_image,(31,31))
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 
 							if event.type == pygame.KEYDOWN:
 
@@ -554,7 +578,11 @@ def startLevelGame(level, screen, font):
 							direction=DIRECTION_INIT
 								#break
 							wall_sprites = level.setupWalls(SKYBLUE, screen_size[0], screen_size[1])
+<<<<<<< HEAD
 							gate_sprites = level.setupGate(WHITE)
+=======
+							gate_sprites = level.setupGate(WHITE, screen_size[0], screen_size[1])
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 							hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH],screen_size[0],screen_size[1])
 							food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
 
@@ -597,7 +625,11 @@ def startLevelGame(level, screen, font):
 								is_clearance=False
 								is_nextstage=False
 								wall_sprites = level.setupWalls(SKYBLUE, screen_size[0], screen_size[1])
+<<<<<<< HEAD
 								gate_sprites = level.setupGate(WHITE)
+=======
+								gate_sprites = level.setupGate(WHITE, screen_size[0], screen_size[1])
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 								hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH],screen_size[0],screen_size[1])
 								food_sprites = loss_food_sprites
 								direction = DIRECTION_INIT
@@ -613,7 +645,18 @@ def startLevelGame(level, screen, font):
 						for hero in hero_sprites:
 							food_eaten = pygame.sprite.spritecollide(hero, food_sprites, True)
 							hero.pchangeSpeed(isFeverTime,direction)
+<<<<<<< HEAD
 						SCORE += SCORE_MUL*len(food_eaten)
+=======
+						for food in food_eaten:
+							# food.width == screen_size[0]/40, screen_size[0]/30 : 큰아이템
+							if food.width == screen_size[0]/40 or food.width == screen_size[0]/30:
+								SCORE += SCORE_BIG
+							# 작은아이템
+							else:
+								SCORE += SCORE_SMALL
+						#SCORE += SCORE_MUL*len(food_eaten)
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 						if isFeverTime == True and pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, False):
 							SCORE += FEVER_EAT
 						wall_sprites.draw(screen)
@@ -730,7 +773,11 @@ def lrestart_screen(screen):
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_RETURN:
 					wall_sprites = level.setupWalls(SKYBLUE, screen_size[0], screen_size[1])
+<<<<<<< HEAD
 					gate_sprites = level.setupGate(WHITE)
+=======
+					gate_sprites = level.setupGate(WHITE, screen_size[0], screen_size[1])
+>>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
 					hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH],screen_size[0],screen_size[1])
 					food_sprites = loss_food_sprites
 					runn=False
