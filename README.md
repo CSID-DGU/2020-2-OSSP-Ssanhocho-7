@@ -3,7 +3,7 @@ https://mp.weixin.qq.com/s/UBVLDW2T-Y6R-0IaRfu81Q
 
 # Environment
 ```
-OS: Windows10
+OS: Linux
 Python: Python3.5+(have installed necessary dependencies)
 ```
 
@@ -11,6 +11,9 @@ Python: Python3.5+(have installed necessary dependencies)
 ```
 Step1:
 pip install -r requirements.txt
+pip install pandas
+pip install PyMySQL
+pip numpy==1.19.3
 Step2:
 python Game14.py
 ```
