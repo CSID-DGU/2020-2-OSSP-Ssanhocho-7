@@ -30,8 +30,14 @@ Python: Python3.5+(have installed necessary dependencies)
 ```
 Step1:
 pip install -r requirements.txt
+<<<<<<< .merge_file_a05512
 pip install PyMySQL
 pip install pandas
+=======
+pip install pandas
+pip install PyMySQL
+pip numpy==1.19.3
+>>>>>>> .merge_file_a15340
 Step2:
 python Game14.py
 ```
