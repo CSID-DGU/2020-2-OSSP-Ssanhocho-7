@@ -6,6 +6,8 @@ import Game14
 MODE= 'randomMode'
 
 ghost_move_range=0.5
+hero_init_x = width/2
+hero_init_y = height*6/9
 
 '''
 setupWalls 원리
@@ -29,7 +31,7 @@ class Level1():
 		wall_positions = [[0, 0, width/70, height], # 맨 왼쪽
 	                    [0, 0, width, width/70], # 맨 위쪽
 	                    [0, height-width/70, width, width/70], # 맨 아래쪽
-	                    [width-width/110, 0, width/6, height], # 맨 오른쪽
+	                    [width-width/110, 0, width/70, height], # 맨 오른쪽
 	                    [width/4+width/70, 0, width/70, height/7+width/70], # 맨 위 왼쪽 | #x나누는수가 커지면 왼쪽으로 감,y,
 	                    [width*ghost_move_range*6/4, 0, width/70, height/7+width/70], # 맨 위 오른쪽 |
 	                    [width/3 + width/20, height/6.5, width/4, width/70], # ghost zone 위 가운데 -----
@@ -64,8 +66,7 @@ class Level1():
 
 	# EASY version 캐릭터 구축
 	def setupPlayers(self, hero_image_path, ghost_images_path,width,height):
-		hero_init_x = width/2
-		hero_init_y = height*6/9
+
 		self.hero_sprites = pygame.sprite.Group()
 		self.ghost_sprites = pygame.sprite.Group()
 		self.hero_sprites.add(Player(hero_init_x, hero_init_y , hero_image_path)) #width/2 등 상수로 나눈것은 screen화면에 대한 비율을 밎추기위함입니다

@@ -1,17 +1,8 @@
-'''
-Function:
-	吃豆豆小游戏
-Author:
-	Charles
-微信公众号:
-	Charles的皮卡丘
-'''
 import os, sys ,pygame,Levels,Fever,time,pymysql
 import pandas as pd
-5
+
 pygame.init()
 
-'''定义一些必要的参数'''
 #색 지정
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -115,7 +106,6 @@ database = "test"
 conn = pymysql.connect(host=host,port=port,user=username,passwd=password,db=database,charset='utf8')
 curs=conn.cursor()
 
-'''开始某一关游戏'''
 #x[index]/n (index=0 -> 가로 index=1 -> 세로) 를 n등분 이하 코드 모두 적용
 
 def restart_screen(screen):
@@ -499,8 +489,14 @@ def startLevelGame(level, screen, font):
 										sys.exit()
 										pygame.quit()
 								elif event.key == pygame.K_ESCAPE:
-										#여기 제시작
-									 	restart_screen(screen)
+									user_score = SCORE
+									SCORE = SCORE_INIT
+									LIFE=LIFE_INIT
+									fever_count = FEVER_COUNT#fevercount 초기화
+									is_clearance = False
+									is_nextstage = False
+									STAGE=STAGE_INIT
+									restart_screen(screen)
 								elif event.type == pygame.QUIT:
 									sys.exit()
 									pygame.quit()
@@ -606,16 +602,12 @@ def startLevelGame(level, screen, font):
 							timer_y_po=(screen_size[1]/60.6)-(timer_size_height/60.6)
 							screen.blit(timer, (timer_x_po,timer_y_po))
 
-							#TIMER_INFO=[screen_size[0]/1.44,screen_size[1]/60.6]
-							#screen.blit(timer,TIMER_INFO)
-
 						ghost_move(isFeverTime,hero_sprites,ghost_sprites,wall_sprites,gate_sprites,screen)
 
 						#피버타임 그리기
 						if isFeverTime == True:
 							fever_text = pygame.image.load('resources/images/bomb.png')
-							#fever_text = font.render("FEVER", True, PURPLE)
-							fv_txt_img= pygame.transform.scale(fever_text,((int)(screen_size[0]/4),(int)(screen_size[1]/4)))
+							fv_txt_img= pygame.transform.scale(fever_text,((int)(screen_size[0]/5),(int)(screen_size[1]/5)))
 							fv_image_size=fv_txt_img.get_rect().size
 							fv_image_width=fv_image_size[0]
 							fv_image_height=fv_image_size[1]
@@ -623,8 +615,7 @@ def startLevelGame(level, screen, font):
 							fv_y_po=(screen_size[1]/2)-(fv_image_height/2)
 
 							if Levels.MODE=='EASY':
-								#screen.blit(fV_txt_img,FEVER_INFO)
-								fv_txt_img= pygame.transform.scale(fever_text,((int)(screen_size[0]/5),(int)(screen_size[1]/5)))
+								fv_txt_img= pygame.transform.scale(fever_text,((int)(screen_size[0]/7),(int)(screen_size[1]/12)))
 								fv_image_size=fv_txt_img.get_rect().size
 								fv_image_width=fv_image_size[0]
 								fv_image_height=fv_image_size[1]
@@ -632,19 +623,11 @@ def startLevelGame(level, screen, font):
 								fv_y_po=(screen_size[1]/2)-(fv_image_height/2)
 								screen.blit(fv_txt_img,(fv_x_po,fv_y_po))
 							elif Levels.MODE=='HARD':
-								#screen.blit(fV_txt_img, GATE_MID_H)
+
 								screen.blit(fv_txt_img,(fv_x_po,fv_y_po))
 
 						#상단바 그리기
-							'''easytitle=gameFont.render("EASY",True,WHITE)
-							clicked_easytitle=gameFont.render("EASY",True,RED)
-							easy_size=easytitle.get_rect().size
-							easy_size_width=easy_size[0]
-							easy_size_height=easy_size[1]
-							easy_x_po=(screen_size[0]/3)-(easy_size_width/2)
-							easy_y_po=(screen_size[1]/3)-(easy_size_height/2)'''
 
-					#	INFO = [screen_size[0]/60.6, screen_size[1]/60.6]
 						gameFont = pygame.font.Font('resources/font/Firenight-Regular.otf',int(screen_size[0]/24))
 						score_text = gameFont.render("Score: %s    %s Mode    LIFE : %s" % (SCORE,Levels.MODE,LIFE), True, WHITE)
 						score_size=score_text.get_rect().size
@@ -673,14 +656,12 @@ def lrestart_screen(screen):
 	startmsg_size_height=startmsg_size[1]
 	startmsg_x_po=(screen_size[0]/2)-(startmsg_size_width/2)
 	startmsg_y_po=(screen_size[1]/3)-(startmsg_size_height/2)
-	#screen.blit(startmsg,(startmsg_x_po,startmsg_y_po))
 
 	restartmsg_size=restartmsg.get_rect().size
 	restartmsg_size_width=restartmsg_size[0]
 	restartmsg_size_height=restartmsg_size[1]
 	restartmsg_x_po=(screen_size[0]/2)-(restartmsg_size_width/2)
 	restartmsg_y_po=(screen_size[1]/1.5)-(restartmsg_size_height/2)
-	#screen.blit(restartmsg,(restartmsg_x_po,restartmsg_y_po))
 	screen.fill(BLACK)
 	screen.blit(startmsg,(startmsg_x_po,startmsg_y_po))
 	screen.blit(restartmsg,(restartmsg_x_po,restartmsg_y_po))
@@ -713,7 +694,6 @@ def lrestart_screen(screen):
 				if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
 					last_resize=initial_screen_size
 
-					#resizing=True
 				screen_size=last_resize
 				resizing=True
 
@@ -752,9 +732,9 @@ def lrestart_screen(screen):
 #유령 움직임
 def ghost_move(isFeverTime,hero_sprites,ghost_sprites,wall_sprites,gate_sprites,screen):
 	for ghost in ghost_sprites:
-		if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:#지정된 트랙 인덱스를 나태낸 것입니다
-			ghost.gchangeSpeed(isFeverTime,hero_sprites,ghost_sprites,ghost.tracks[ghost.tracks_loc[0]][0: 2])#지정된 트랙 인덱스를 나태낸 것입니다
-			ghost.tracks_loc[1] += 1#지정된 트랙 인덱스를 나태낸 것입니다 이하 동문
+		if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:#ghost별로 지정된 트랙 인덱스를 나태낸 것. 아래 코드 모두 동일
+			ghost.gchangeSpeed(isFeverTime,hero_sprites,ghost_sprites,ghost.tracks[ghost.tracks_loc[0]][0: 2])
+			ghost.tracks_loc[1] += 1
 		else:
 			if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
 				ghost.tracks_loc[0] += 1
@@ -787,8 +767,7 @@ def add_rank(id):
 	global curs
 
 	print("유저 점수 : ",user_score)
-	#conn = pymysql.connect(host=host,port=port,user=username,passwd=password,db=database,charset='utf8')
-	#curs=conn.cursor()
+
 	sql="insert into test.rank(id,score) values(%s,%s);"
 	curs.execute(sql,(id,user_score))
 	conn.commit()
@@ -980,6 +959,7 @@ def showText(screen, font, is_clearance, flag=False):
 									add_rank(user_id)
 									sys.exit()
 									pygame.quit()
+
 						screen.fill(BLACK)
 						block = [font.render(ID_INFO, True, WHITE),
 							     font.render(user_id, True, YELLOW)]
