@@ -10,6 +10,8 @@ import random
 import pygame
 import Fever
 
+width = 606
+height = 606
 
 '''墙类'''
 class Wall(pygame.sprite.Sprite):
@@ -43,10 +45,10 @@ class Player(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.role_name = role_image_path.split('/')[-1].split('.')[0]
 		self.base_image = pygame.image.load(role_image_path).convert_alpha()
-		self.small_img = pygame.transform.scale(self.base_image,(31,31))
+		self.small_img = pygame.transform.scale(self.base_image,(int(width/19.55),int(height/19.55)))
 		self.fever_img = pygame.image.load('resources/images/fever.png').convert()
 		self.g_base= pygame.image.load('resources/images/ghostfever.png').convert()
-		self.g_fever_img =pygame.transform.scale(self.g_base,(21,21))
+		self.g_fever_img =pygame.transform.scale(self.g_base,(int(width/19.55),int(height/19.55)))
 		self.image = self.small_img.copy()
 		self.rect = self.image.get_rect()
 		self.rect.left = x
@@ -55,22 +57,21 @@ class Player(pygame.sprite.Sprite):
 		self.prev_y = y
 		self.base_speed = [30, 30]
 		self.speed = [0, 0]
-		#self.speed_t=[0,0]
 		self.is_move = True
 		self.tracks = []
 		self.tracks_loc = [0, 0]
 		fever = Fever.Fever()
 	'''改变速度方向'''
 	def pchangeSpeed(self,isFeverTime,direction):
-		#self.change_x+=x
-		#self.change_y+=y
+
+		#direction[idx] idx =0 -> x idx=1 -> y
 		if isFeverTime:
 			if direction[0] < 0:
 				self.image = pygame.transform.flip(self.fever_img, True, False)
 			elif direction[0] > 0:
 				self.image = self.fever_img.copy()
 			elif direction[1] < 0:
-				self.image = pygame.transform.rotate(self.fever_img, 90)
+				self.image = pygame.transform.rotate(self.fever_img, 90) #90도 회전
 			elif direction[1] > 0:
 				self.image = pygame.transform.rotate(self.fever_img, -90)
 		else:
@@ -123,12 +124,6 @@ class Player(pygame.sprite.Sprite):
 			self.rect.top = y_prev
 		if gate_sprites is not None:
 			if not is_collide:
-				is_collide = pygame.sprite.spritecollide(self, gate_sprites, True)
-		#if is_collide:
-			#self.rect.left = x_prev
-			#self.rect.top = y_prev
-			#return False
+				is_collide = pygame.sprite.spritecollide(self, gate_sprites, False)
+
 		return True
-	'''生成随机的方向'''
-	def randomDirection(self):
-		return random.choice([[-0.5, 0], [0.5, 0], [0, 0.5], [0, -0.5]])
