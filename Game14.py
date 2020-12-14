@@ -11,12 +11,8 @@ import pandas as pd
 5
 pygame.init()
 
-<<<<<<< .merge_file_a07088
 '''定义一些必要的参数'''
 #색 지정
-=======
-'''定义一些必要的参数(몇가지 주요배개변수 )'''
->>>>>>> .merge_file_a06448
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -66,18 +62,11 @@ set_rank_color='WHITE'
 moniter_size=pygame.display.Info().current_w,pygame.display.Info().current_h
 
 music_on=True
-<<<<<<< HEAD
 #폰트 50은 초기값지정입니다 후에 변경합니다
 gameFont = pygame.font.Font('resources/font/Firenight-Regular.otf',int(screen_size[0]/15))
 title_size = 50
 small_font_size = 24
 big_font_size = 30
-=======
-
-<<<<<<< .merge_file_a07088
-gameFont = pygame.font.Font('resources/font/Firenight-Regular.otf',50)
-
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
 #--------------
 #1.타임
 TIME_INIT=0.0
@@ -270,259 +259,36 @@ def startLevelGame(level, screen, font):
 	#easy mode
 	easytitle=gameFont.render("EASY",True,WHITE)
 	clicked_easytitle=gameFont.render("EASY",True,RED)
-=======
-screen_size=606,606
-initial_screen_size=606,606
-easy_screen=577,306
-img =pygame.image.load('resources/images/pacman.png')
-
-bg = pygame.image.load("resources/images/pm_bg20.png")
-set_easy_color='WHITE'
-set_hard_color='WHITE'
-set_rank_color='WHITE'
-moniter_size=pygame.display.Info().current_w,pygame.display.Info().current_h
-
-music_on=True
-SCORE = 0
-
-'''set_easy_color='WHITE'
-set_hard_color='WHITE'
-start_image_ex=pygame.image.load('resources/images/start_button2.png')
-start_image=pygame.transform.scale(start_image_ex,((int)(screen_size[0]/5),(int)(HEIGHT/10)))
-start_image_size=start_image.get_rect().size
-start_image_width=start_image_size[0]
-start_image_height=start_image_size[1]
-start_x_po=(screen_size[0]/2)-(start_image_width/2)
-start_y_po=(screen_size[1]/1.5)-(start_image_height/2)'''
-
-
-yongFont = pygame.font.Font( 'resources/font/ALGER.TTF',50)
-
-'''easytitle=yongFont.render("EASY",True,WHITE)
-clicked_easytitle=yongFont.render("EASY",True,PURPLE)
-easy_size=easytitle.get_rect().size
-easy_size_width=easy_size[0]
-easy_size_height=easy_size[1]
-easy_x_po=(screen_size[0]/3)-(easy_size_width/2)
-easy_y_po=(screen_size[1]/3)-(easy_size_height/2)
-
-hardtitle=yongFont.render("HARD",True,WHITE)
-hard_size=hardtitle.get_rect().size
-hard_size_width=hard_size[0]
-hard_size_height=hard_size[1]
-hard_x_po=(screen_size[0]/1.5)-(hard_size_width/2)
-hard_y_po=(screen_size[1]/3)-(hard_size_height/2)
-set_color='WHITE'''
-
-'''开始某一关游戏(특정레벨시 )'''
-def start_scr(screen,color,WHIDTH,HEIGHT):
-	easytitle=yongFont.render("EASY",True,color)
-	easy_size=easytitle.get_rect().size
-	easy_size_width=easy_size[0]
-	easy_size_height=easy_size[1]
-	easy_x_po=(screen_size[0]/3)-(easy_size_width/2)
-	easy_y_po=(HEIGHT/3)-(easy_size_height/2)
-
-	hardtitle=yongFont.render("HARD",True,color)
-	hard_size=hardtitle.get_rect().size
-	hard_size_width=hard_size[0]
-	hard_size_height=hard_size[1]
-	hard_x_po=(screen_size[0]/1.5)-(hard_size_width/2)
-	hard_y_po=(HEIGHT/3)-(hard_size_height/2)
-
-	'''screen.blit(background, (0, 0))
-	screen.blit(easytitle,(easy_x_po,easy_y_po))
-	screen.blit(hardtitle,(hard_x_po,hard_y_po))
-	screen.blit(start_image,(start_x_po,start_y_po))
-	pygame.display.flip()
-	screen.fill(BLACK)'''
-
-
-def pause_scr(screen):
-	global screen_size
-	yongFont = pygame.font.Font( None,50)
-	yongtitle5=yongFont.render("PRESS ESC KEY => START",True,WHITE)
-	yongtitle6=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
-
-	yongtitle5_size=yongtitle5.get_rect().size
-	yongtitle5_size_width=yongtitle5_size[0]
-	yongtitle5_size_height=yongtitle5_size[1]
-	yongtitle5_x_po=(screen_size[0]/2)-(yongtitle5_size_width/2)
-	yongtitle5_y_po=(screen_size[1]/3)-(yongtitle5_size_height/2)
-	#screen.blit(yongtitle5,(yongtitle5_x_po,yongtitle5_y_po))
-
-	yongtitle6_size=yongtitle6.get_rect().size
-	yongtitle6_size_width=yongtitle6_size[0]
-	yongtitle6_size_height=yongtitle6_size[1]
-	yongtitle6_x_po=(screen_size[0]/2)-(yongtitle6_size_width/2)
-	yongtitle6_y_po=(screen_size[1]/1.5)-(yongtitle6_size_height/2)
-	#screen.blit(yongtitle6,(yongtitle6_x_po,yongtitle6_y_po))
-
-
-
-
-
-def restart_screen(screen):
-	global set_easy_color
-	global set_hard_color
-	runn=True
-	resizing=False
-	global screen_size
-	yongFont = pygame.font.Font( None,50)
-	yongtitle5=yongFont.render("PRESS ESC KEY => START",True,WHITE)
-	yongtitle6=yongFont.render("PRESS R KEY => RESTART",True,WHITE)
-
-	yongtitle5_size=yongtitle5.get_rect().size
-	yongtitle5_size_width=yongtitle5_size[0]
-	yongtitle5_size_height=yongtitle5_size[1]
-	yongtitle5_x_po=(screen_size[0]/2)-(yongtitle5_size_width/2)
-	yongtitle5_y_po=(screen_size[1]/3)-(yongtitle5_size_height/2)
-	#screen.blit(yongtitle5,(yongtitle5_x_po,yongtitle5_y_po))
-
-	yongtitle6_size=yongtitle6.get_rect().size
-	yongtitle6_size_width=yongtitle6_size[0]
-	yongtitle6_size_height=yongtitle6_size[1]
-	yongtitle6_x_po=(screen_size[0]/2)-(yongtitle6_size_width/2)
-	yongtitle6_y_po=(screen_size[1]/1.5)-(yongtitle6_size_height/2)
-	#screen.blit(yongtitle6,(yongtitle6_x_po,yongtitle6_y_po))
-	screen.fill(BLACK)
-	screen.blit(yongtitle5,(yongtitle5_x_po,yongtitle5_y_po))
-	screen.blit(yongtitle6,(yongtitle6_x_po,yongtitle6_y_po))
-	pygame.display.flip()
-	while runn:
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				sys.exit(-1)
-				pygame.quit()
-			if event.type == pygame.VIDEORESIZE:
-				'''last_resize=event.w, event.h
-				if screen_size[0]<=last_resize[0] and screen_size[1]<=last_resize[1] :
-					screen_size=last_resize
-					print(screen_size)
-					resizing=True
-				else:
-					last_resize =screen_size
-					screen_size = last_resize
-					print(screen_size)
-					resizing=True'''
-				last_resize=event.w,event.h
-				if event.w>event.h :
-					if last_resize[0]>=moniter_size[1]:
-						a=moniter_size[1]
-						event.w=a
-					print("gggg")
-					last_resize=event.w , event.w
-
-				elif(event.h>event.w):
-					if last_resize[1]>=moniter_size[1]:
-						b=moniter_size[1]
-						event.h=b
-					last_resize=event.h , event.h
-					print("hhhhh")
-
-				if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
-					last_resize=initial_screen_size
-					print("hi")
-
-					#resizing=True
-				screen_size=last_resize
-				resizing=True
-
-				if resizing :
-					screen_size=last_resize
-					screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE | pygame.NOFRAME)
-					resizing=False
-					resizing_this_frame=False
-					last_resize=None
-					yongtitle5_size_width=yongtitle5_size[0]
-					yongtitle5_size_height=yongtitle5_size[1]
-					yongtitle5_x_po=(screen_size[0]/2)-(yongtitle5_size_width/2)
-					yongtitle5_y_po=(screen_size[1]/3)-(yongtitle5_size_height/2)
-
-					yongtitle6_size_width=yongtitle6_size[0]
-					yongtitle6_size_height=yongtitle6_size[1]
-					yongtitle6_x_po=(screen_size[0]/2)-(yongtitle6_size_width/2)
-					yongtitle6_y_po=(screen_size[1]/1.5)-(yongtitle6_size_height/2)
-
-					screen.fill(BLACK)
-					screen.blit(yongtitle5,(yongtitle5_x_po,yongtitle5_y_po))
-					screen.blit(yongtitle6,(yongtitle6_x_po,yongtitle6_y_po))
-					pygame.display.flip()
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_ESCAPE:
-						runn=False
-
-				elif event.key == pygame.K_r:
-						set_easy_color='WHITE'
-						set_hard_color='WHITE'
-						main(initialize())
-
-def startLevelGame(level, screen, font):
-	global screen_size
-	global set_easy_color
-	global set_hard_color
-	global music_on, SCORE
-	global set_rank_color
-	clock = pygame.time.Clock()
-	SCORE = 0
-	wall_sprites = level.setupWalls(SKYBLUE, screen_size[0], screen_size[1])
-	gate_sprites = level.setupGate(WHITE)
-	hero_sprites, ghost_sprites = level.setupPlayers(HEROPATH, [BlinkyPATH, ClydePATH, InkyPATH, PinkyPATH],screen_size[0],screen_size[1])
-	food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
-	is_clearance = False
-	is_true=False
-
-	easytitle=yongFont.render("EASY",True,WHITE)
-	clicked_easytitle=yongFont.render("EASY",True,RED)
->>>>>>> .merge_file_a06448
 	easy_size=easytitle.get_rect().size
 	easy_size_width=easy_size[0]
 	easy_size_height=easy_size[1]
 	easy_x_po=(screen_size[0]/3)-(easy_size_width/2)
 	easy_y_po=(screen_size[1]/3)-(easy_size_height/2)
-<<<<<<< .merge_file_a07088
 
 	#hard mode
 	hardtitle=gameFont.render("HARD",True,WHITE)
 	clicked_hardtitle=gameFont.render("HARD",True,RED)
-=======
-	hardtitle=yongFont.render("HARD",True,WHITE)
-	clicked_hardtitle=yongFont.render("HARD",True,RED)
->>>>>>> .merge_file_a06448
 	hard_size=hardtitle.get_rect().size
 	hard_size_width=hard_size[0]
 	hard_size_height=hard_size[1]
 	hard_x_po=(screen_size[0]/1.5)-(hard_size_width/2)
 	hard_y_po=(screen_size[1]/3)-(hard_size_height/2)
 
-<<<<<<< .merge_file_a07088
 	#ranking
 	ranktitle = gameFont.render("RANK", True, WHITE)
 	clicked_ranktitle = gameFont.render("RANK", True, YELLOW)
-=======
-	ranktitle = yongFont.render("RANK", True, WHITE)
-	clicked_ranktitle = yongFont.render("RANK", True, YELLOW)
->>>>>>> .merge_file_a06448
 	rank_size = ranktitle.get_rect().size
 	rank_size_width = hard_size[0]
 	rank_size_height = hard_size[1]
 	rank_x_po = screen_size[0]/2 - rank_size_width/2
 	rank_y_po = screen_size[1]/2
 
-<<<<<<< .merge_file_a07088
 	#배경
 	background=pygame.transform.scale(backgroundimg,screen_size)
 	background.set_alpha(200)
 
 	#시작 버튼
 	start_image_ex=pygame.image.load('resources/images/start_button.png')
-=======
-	background=pygame.transform.scale(bg,screen_size)
-	background.set_alpha(200)
-
-
-	start_image_ex=pygame.image.load('resources/images/start_button2.png')
->>>>>>> .merge_file_a06448
 	start_image=pygame.transform.scale(start_image_ex,((int)(screen_size[0]/5),(int)(screen_size[1]/10)))
 	start_image_size=start_image.get_rect().size
 	start_image_width=start_image_size[0]
@@ -533,7 +299,6 @@ def startLevelGame(level, screen, font):
 	resizing=False
 	#resizing_this_frame=False
 	last_resize=None
-<<<<<<< .merge_file_a07088
 
 	#게임 진행
 	while True:
@@ -548,13 +313,6 @@ def startLevelGame(level, screen, font):
 		start_y_po=(screen_size[1]/1.5)-(start_image_height/2)
 
 		screen.blit(background,back_loc)
-=======
-	fullscreen=False
-	global moniter_size
-
-	while True:
-		screen.blit(background,(0, 0))
->>>>>>> .merge_file_a06448
 		if set_easy_color =='WHITE':
 			screen.blit(easytitle,(easy_x_po,easy_y_po))
 		elif  set_easy_color=='RED':
@@ -575,17 +333,7 @@ def startLevelGame(level, screen, font):
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_m:
-<<<<<<< HEAD
 				# 음악 일시정지
-=======
-<<<<<<< .merge_file_a07088
-<<<<<<< HEAD
-=======
-				# 음악 일시정지
->>>>>>> 8ba7fb378c5453721f6bf8fcca6c67e537f096dc
-=======
->>>>>>> .merge_file_a06448
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
 					if music_on:
 						pygame.mixer.music.pause()
 						music_on=False
@@ -599,30 +347,13 @@ def startLevelGame(level, screen, font):
 					if last_resize[0]>=moniter_size[1]:
 						a=moniter_size[1]
 						event.w=a
-<<<<<<< HEAD
 					last_resize=event.w , event.w
-=======
-<<<<<<< .merge_file_a07088
-						print("dd")
-					last_resize=event.w , event.w
-					print(moniter_size[0])
-					print("가로",last_resize[0],last_resize[1])
-=======
-					print("gggg")
-					last_resize=event.w , event.w
->>>>>>> .merge_file_a06448
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
 
 				elif(event.h>event.w):
 					if last_resize[1]>=moniter_size[1]:
 						b=moniter_size[1]
 						event.h=b
 					last_resize=event.h , event.h
-<<<<<<< HEAD
-=======
-<<<<<<< .merge_file_a07088
-					print("tp로",last_resize[0],last_resize[1])
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
 
 				if event.w < initial_screen_size[0] or event.h < initial_screen_size[1] :
 					last_resize=initial_screen_size
@@ -636,7 +367,6 @@ def startLevelGame(level, screen, font):
 					resizing=False
 					resizing_this_frame=False
 					last_resize=None
-<<<<<<< HEAD
 					start_image=pygame.transform.scale(start_image_ex,((int)(screen_size[0]/5),(int)(screen_size[1]/10)))
 					start_image_size=start_image.get_rect().size
 					start_image_width=start_image_size[0]
@@ -644,26 +374,6 @@ def startLevelGame(level, screen, font):
 					start_x_po=(screen_size[0]/2)-(start_image_width/2)
 					start_y_po=(screen_size[1]/1.5)-(start_image_height/2)
 					screen.blit(start_image,(start_x_po,start_y_po))
-=======
-=======
-					print("hhhhh")
-
-				if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
-					last_resize=initial_screen_size
-					print("hi")
-
-					#resizing=True
-				screen_size=last_resize
-				resizing=True
-
-				if resizing :
-					screen=pygame.display.set_mode(screen_size , pygame.RESIZABLE | pygame.NOFRAME)
-					resizing=False
-					resizing_this_frame=False
-					last_resize=None
-
->>>>>>> .merge_file_a06448
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
 					if set_easy_color == 'RED' and set_hard_color == 'WHITE':
 						main(initialize())
 					elif set_easy_color == 'WHITE' and set_hard_color =='RED' :
@@ -676,7 +386,6 @@ def startLevelGame(level, screen, font):
 			if event.type == pygame.MOUSEMOTION:
 				#get_pos[index] (index = 0 -> 가로 , index = 1 -> 세로)
 				if pygame.mouse.get_pos()[0] >= easy_x_po and pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and pygame.mouse.get_pos()[1] >= easy_y_po and pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
-<<<<<<< .merge_file_a07088
 					easytitle=gameFont.render("EASY",True,RED)
 				elif pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
 					hardtitle=gameFont.render("HARD",True,RED)
@@ -686,17 +395,6 @@ def startLevelGame(level, screen, font):
 					easytitle=gameFont.render("EASY",True,WHITE)
 					hardtitle=gameFont.render("HARD",True,WHITE)
 					ranktitle = gameFont.render("RANK", True, WHITE)
-=======
-					easytitle=yongFont.render("EASY",True,RED)
-				elif pygame.mouse.get_pos()[0] >= hard_x_po and pygame.mouse.get_pos()[0] <= hard_x_po+hard_size_width and pygame.mouse.get_pos()[1] >= hard_y_po and pygame.mouse.get_pos()[1] <= hard_y_po+hard_size_height:
-					hardtitle=yongFont.render("HARD",True,RED)
-				elif rank_x_po <= pygame.mouse.get_pos()[0] <= rank_x_po+rank_size_width and rank_y_po <= pygame.mouse.get_pos()[1] <= rank_y_po+rank_size_height:
-					ranktitle = yongFont.render("RANK", True, YELLOW)
-				else:
-					easytitle=yongFont.render("EASY",True,WHITE)
-					hardtitle=yongFont.render("HARD",True,WHITE)
-					ranktitle = yongFont.render("RANK", True, WHITE)
->>>>>>> .merge_file_a06448
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if easy_x_po <= pygame.mouse.get_pos()[0] <= easy_x_po+easy_size_width and easy_y_po <= pygame.mouse.get_pos()[1] <= easy_y_po+easy_size_height:
 					set_easy_color='RED'
@@ -712,7 +410,6 @@ def startLevelGame(level, screen, font):
 					set_easy_color='WHITE'
 					set_hard_color='WHITE'
 					set_rank_color = 'YELLOW'
-<<<<<<< .merge_file_a07088
 					show_rank(screen,font)
 
 				if start_x_po <= pygame.mouse.get_pos()[0] <= start_x_po+start_image_width and start_y_po <= pygame.mouse.get_pos()[1] <= start_y_po+start_image_height:
@@ -722,13 +419,6 @@ def startLevelGame(level, screen, font):
 						if LIFE>=1 and LIFE<LIFE_INIT and is_nextstage==False :
 							food_sprites = loss_food_sprites
 
-=======
-
-
-				if start_x_po <= pygame.mouse.get_pos()[0] <= start_x_po+start_image_width and start_y_po <= pygame.mouse.get_pos()[1] <= start_y_po+start_image_height:
-					ff=True
-					while ff:
->>>>>>> .merge_file_a06448
 						for event in pygame.event.get():
 							if event.type == pygame.QUIT:
 								sys.exit(-1)
@@ -739,10 +429,6 @@ def startLevelGame(level, screen, font):
 									if last_resize[0]>=moniter_size[1]:
 										a=moniter_size[1]
 										event.w=a
-<<<<<<< .merge_file_a07088
-=======
-									print("gggg")
->>>>>>> .merge_file_a06448
 									last_resize=event.w , event.w
 
 								elif(event.h>event.w):
@@ -750,22 +436,13 @@ def startLevelGame(level, screen, font):
 										b=moniter_size[1]
 										event.h=b
 									last_resize=event.h , event.h
-<<<<<<< .merge_file_a07088
 
 								if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
 									last_resize=initial_screen_size
-=======
-									print("hhhhh")
-
-								if event.w<initial_screen_size[0] or event.h < initial_screen_size[1] :
-									last_resize=initial_screen_size
-									print("hi")
->>>>>>> .merge_file_a06448
 
 									#resizing=True
 								screen_size=last_resize
 								resizing=True
-<<<<<<< .merge_file_a07088
 
 								if resizing :
 									screen_size=last_resize
@@ -1099,8 +776,6 @@ def ghost_move(isFeverTime,hero_sprites,ghost_sprites,wall_sprites,gate_sprites,
 			ghost.gchangeSpeed(isFeverTime,hero_sprites,ghost_sprites,ghost.tracks[loc0][0: 2])
 		ghost.update(wall_sprites, gate_sprites)
 	ghost_sprites.draw(screen)
-=======
->>>>>>> .merge_file_a06448
 
 def add_rank(id):
 	global host
@@ -1235,118 +910,7 @@ def show_rank(screen,font):
 
 		pygame.display.flip()
 
-								if resizing :
-									screen_size=last_resize
-									screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE)
-									resizing=False
-									resizing_this_frame=False
-									last_resize=None
-									wall_sprites = level.setupWalls(SKYBLUE,screen_size[0],screen_size[1])
-									for hero in hero_sprites:
-										hero.base_image = pygame.transform.scale(hero.base_image, (80,80))
-										hero.image = hero.base_image.copy()
-									food_sprites = level.setupFood(YELLOW, WHITE, screen_size[0], screen_size[1])
-							if event.type == pygame.KEYDOWN:
-								if event.key == pygame.K_m:
-									if music_on:
-										pygame.mixer.music.pause()
-										music_on = False
-									else:
-										pygame.mixer.music.unpause()
-										music_on = True
-								if event.key == pygame.K_LEFT:
-									for hero in hero_sprites:
-										hero.changeSpeed([-1, 0])
-										hero.is_move = ff
-								elif event.key == pygame.K_RIGHT:
-									for hero in hero_sprites:
-										hero.changeSpeed([1, 0])
-										hero.is_move = ff
-								elif event.key == pygame.K_UP:
-									for hero in hero_sprites:
-										hero.changeSpeed([0, -1])
-										hero.is_move = ff
-								elif event.key == pygame.K_DOWN:
-									for hero in hero_sprites:
-										hero.changeSpeed([0, 1])
-										hero.is_move = ff
-					#일시정지 기능 만드는 중 11/11 창dy
-								elif event.key == pygame.K_a:
-										sys.exit()
-										pygame.quit()
-								elif event.key == pygame.K_ESCAPE:
-										#여기 제시작
-									 	restart_screen(screen)
-								elif event.type == pygame.QUIT:
-									sys.exit()
-									pygame.quit()
-
-							if event.type == pygame.KEYUP:
-								if (event.key == pygame.K_LEFT) or (event.key == pygame.K_RIGHT) or (event.key == pygame.K_UP) or (event.key == pygame.K_DOWN):
-									hero.is_move != ff
-						screen.fill(BLACK)
-						for hero in hero_sprites:
-							hero.update(wall_sprites, gate_sprites)
-						hero_sprites.draw(screen)
-						for hero in hero_sprites:
-							food_eaten = pygame.sprite.spritecollide(hero, food_sprites, True)
-						for food in food_eaten:
-							if food.width==screen_size[0]/40:
-								SCORE+=50
-							else:
-								SCORE+=10
-						wall_sprites.draw(screen)
-						gate_sprites.draw(screen)
-						food_sprites.draw(screen)
-						for ghost in ghost_sprites:
-							# 幽灵随机运动(效果不好且有BUG) 유령 무작위 이(나쁜효과 및버그)
-
-							# 指定幽灵运动路径(유령 경로이 )
-							if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
-								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
-								ghost.tracks_loc[1] += 1
-							else:
-								if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
-									ghost.tracks_loc[0] += 1
-								elif ghost.role_name == 'Clyde':
-									ghost.tracks_loc[0] = 2
-								else:
-									ghost.tracks_loc[0] = 0
-								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
-								ghost.tracks_loc[1] = 0
-							if ghost.tracks_loc[1] < ghost.tracks[ghost.tracks_loc[0]][2]:
-								ghost.changeSpeed(ghost.tracks[ghost.tracks_loc[0]][0: 2])
-							else:
-								if ghost.tracks_loc[0] < len(ghost.tracks) - 1:
-									loc0 = ghost.tracks_loc[0] + 1
-								elif ghost.role_name == 'Clyde':
-									loc0 = 2
-								else:
-									loc0 = 0
-								ghost.changeSpeed(ghost.tracks[loc0][0: 2])
-							ghost.update(wall_sprites, None)
-						ghost_sprites.draw(screen)
-						score_text = font.render("Score: %s" % SCORE, True, RED)
-						screen.blit(score_text, [10, 10])
-						if len(food_sprites) == 0:
-							is_clearance = True
-							break
-						if pygame.sprite.groupcollide(hero_sprites, ghost_sprites, False, False):
-							is_clearance = False
-							break
-						pygame.display.flip()
-						clock.tick(10)
-					return is_clearance
-
-	'''	if resizing :
-			screen_size=last_resize
-			screen=pygame.display.set_mode(screen_size, pygame.RESIZABLE)
-			resizing=False
-			resizing_this_frame=False
-			last_resize=None
-			print(screen_size)'''
-
-'''显示文字텍스트 이름?'''
+'''显示文字'''
 def showText(screen, font, is_clearance, flag=False):
 	global set_easy_color
 	global set_hard_color
@@ -1374,31 +938,12 @@ def showText(screen, font, is_clearance, flag=False):
 			     font.render('Press ENTER to play NEXT STAGE', True, WHITE),
 		     	 font.render('Press ESC to quit.', True, WHITE)]
 
-<<<<<<< HEAD
 	surface = pygame.Surface((show_text_size))
 	surface.set_alpha(10) #투명도 설정
 	surface.fill(BLACK)
 	screen.blit(surface, (screen_size[0]/6, screen_size[1]/3))
-=======
-	surface = pygame.Surface((400, 200))
-	surface.set_alpha(10)#투명
-	surface.fill((128, 128, 128))
-	screen.blit(surface, (100, 200))
-<<<<<<< .merge_file_a07088
-=======
-	texts = [font.render(msg, True, WHITE),
-			 font.render('Press ENTER to continue or play again.', True, WHITE),
-			 font.render('Press ESCAPE to quit.', True, WHITE)]
-
-
->>>>>>> .merge_file_a06448
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
 
 	while True:
-		for idx, (text, position) in enumerate(zip(texts, positions)):
-			screen.blit(text, position)
-		pygame.display.flip()
-		clock.tick(10)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit()
@@ -1411,16 +956,11 @@ def showText(screen, font, is_clearance, flag=False):
 
 					if is_clearance:
 						if not flag:
-<<<<<<< .merge_file_a07088
 							main(initialize())
-=======
-							return
->>>>>>> .merge_file_a06448
 						else:
 							main1(initialize())
 					else:
 						main1(initialize())
-<<<<<<< .merge_file_a07088
 				elif event.key == pygame.K_r:
 					show_rank(screen,font)
 				elif event.key == pygame.K_ESCAPE and save==True:
@@ -1458,61 +998,28 @@ def showText(screen, font, is_clearance, flag=False):
 		for idx, (text, position) in enumerate(zip(texts, positions)):
 			screen.blit(text, position)
 		pygame.display.flip()
-<<<<<<< HEAD
 		clock.tick(FPS)
-=======
-		clock.tick(60)
-=======
-				elif event.key == pygame.K_ESCAPE:
-					sys.exit()
-					pygame.quit()
 
 
-
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
-
-
-
-		'''for idx, (text, position) in enumerate(zip(texts, positions)):
-			screen.blit(text, position)
-		pygame.display.flip()
-		clock.tick(10)'''
->>>>>>> .merge_file_a06448
-
-
-'''初始化(초기)'''
+'''初始化'''
 def initialize():
 	global screen_size
 	pygame.init()
-	global screen_size
 	icon_image = pygame.image.load(ICONPATH)
 	pygame.display.set_icon(icon_image)
 	screen = pygame.display.set_mode(screen_size,pygame.RESIZABLE)
-<<<<<<< .merge_file_a07088
 	pygame.display.set_caption('OSSP Ssanhocho pacman')
-=======
-
-	pygame.display.set_caption('Pacman-微信公众号Charles的皮卡丘')
->>>>>>> .merge_file_a06448
 	return screen
 
 
-'''主函数(주요기)'''
+'''主函数'''
 def main(screen):
-	'''pygame.mixer.init()
+	pygame.mixer.init()
 	pygame.mixer.music.load(BGMPATH)
-<<<<<<< HEAD
 	pygame.mixer.music.play(-1, 0.0) #-1 : 게임 종료시까지 음악 반복 의미
 	pygame.font.init()
 	font_small = pygame.font.Font(FONTPATH, small_font_size)
 	font_big = pygame.font.Font(FONTPATH, big_font_size)
-=======
-	pygame.mixer.music.play(-1, 0.0)'''
-	pygame.font.init()
-<<<<<<< .merge_file_a07088
-	font_small = pygame.font.Font(FONTPATH, 24)
-	font_big = pygame.font.Font(FONTPATH, 30)
->>>>>>> 9dd866686497d09b3639cb525e64c555d6837cfa
 	Levels.MODE='EASY'
 
 	if Levels.MODE == 'EASY':
@@ -1532,19 +1039,6 @@ def main1(screen):
 	font_small = pygame.font.Font(FONTPATH, small_font_size)
 	font_big = pygame.font.Font(FONTPATH, big_font_size)
 	Levels.MODE='HARD'
-=======
-	Levels.MODE='EASY'
-	font_small = pygame.font.Font(FONTPATH, 18)
-	font_big = pygame.font.Font(FONTPATH, 24)
-	#for num_level in range(1, Levels.NUMLEVELS+1):
-	if Levels.MODE=='EASY':
-		level = Levels.Level1()
-		is_clearance = startLevelGame(level, screen, font_small)
-		if Levels.MODE=='EASY':
-			showText(screen, font_big, is_clearance, True)
-		else:
-			showText(screen, font_big, is_clearance)
->>>>>>> .merge_file_a06448
 
 	if Levels.MODE == 'HARD':
 		level = Levels.Level2()
@@ -1555,24 +1049,6 @@ def main1(screen):
 			showText(screen, font_big, is_clearance)
 \
 
-def main1(screen):
-	'''pygame.mixer.init()
-	pygame.mixer.music.load(BGMPATH)
-	pygame.mixer.music.play(-1, 0.0)'''
-	pygame.font.init()
-	Levels.MODE='HARD'
-	font_small = pygame.font.Font(FONTPATH, 18)
-	font_big = pygame.font.Font(FONTPATH, 24)
-
-	if Levels.MODE== 'HARD':
-		level = Levels.Level2()
-		is_clearance = startLevelGame(level, screen, font_small)
-		if Levels.MODE== 'HARD':
-			showText(screen, font_big, is_clearance, True)
-		else:
-			showText(screen, font_big, is_clearance)
-
 '''test'''
-
 if __name__ == '__main__':
-		main(initialize())
+	main(initialize())
